@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  auth:
+    build: ./auth
+    ports:
+      - "8001:80"
+
+  core:
+    build: ./core
+    ports:
+      - "8002:80"
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "8000:80"
