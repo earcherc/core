@@ -1,16 +1,42 @@
 version: '3.8'
+
 services:
   auth:
     build: ./auth
     ports:
-      - "8001:80"
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/auth_db
+    depends_on:
+      - db
 
   core:
     build: ./core
     ports:
-      - "8002:80"
+      - "8001:8000"
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/core_db
+    depends_on:
+      - db
 
   gateway:
     build: ./gateway
     ports:
-      - "8000:80"
+      - "8002:8000"
+    depends_on:
+      - auth
+      - core
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=ethancavill
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+
+volumes:
+  db_data:
