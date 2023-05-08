@@ -9,6 +9,8 @@ services:
       - DATABASE_URL=postgres://user:password@db:5432/auth_db
     depends_on:
       - db
+    volumes:
+      - ./auth:/app
 
   core:
     build: ./core
@@ -18,6 +20,8 @@ services:
       - DATABASE_URL=postgres://user:password@db:5432/core_db
     depends_on:
       - db
+    volumes:
+      - ./core:/app
 
   gateway:
     build: ./gateway
@@ -26,6 +30,8 @@ services:
     depends_on:
       - auth
       - core
+    volumes:
+      - ./gateway:/app
 
   db:
     image: postgres:13
