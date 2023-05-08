@@ -4,7 +4,16 @@
 			"path": "frontend"
 		},
 		{
-			"path": "backend"
+			"path": "backend/auth",
+			"name": "Auth"
+		},
+		{
+			"path": "backend/core",
+			"name": "Core"
+		},
+		{
+			"path": "backend/gateway",
+			"name": "Gateway"
 		}
 	],
 	"settings": {
