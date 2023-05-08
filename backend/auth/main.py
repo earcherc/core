@@ -5,4 +5,4 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "Hello, this is the Elite Auth Service!"}
+    return {"message": "Hello, this is the Auth Service!"}
