@@ -9,9 +9,11 @@
 1. Activate venv/allow direnv
 2. Install requirements for `venv_dev` (global formatting `venv`) and service `venv`'s
 ```
+pip install -r requirements-dev.txt
 pip install -r requirements.txt
 ```
 4. Use VSCode workspace to open project, then set interpreter path for each workspace folder
+
 
 ### Docker
 1. Start Docker daemon
