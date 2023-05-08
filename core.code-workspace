@@ -1,7 +1,15 @@
 {
 	"folders": [
 		{
+			"path": ".",
+			"name": "ROOT"
+		},
+		{
 			"path": "frontend"
+		},
+		{
+			"path": "backend",
+			"name": "backend"
 		},
 		{
 			"path": "backend/auth",
