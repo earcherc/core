@@ -6,7 +6,8 @@
 
 ### Deps
 - direnv
-- docker cli
+- docker
+- docker-compose
 
 ### Local Development
 1. cd backend/
