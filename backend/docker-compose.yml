@@ -6,7 +6,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgres://user:password@db:5432/auth_db
+      - DATABASE_URL=postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME_AUTH}
     depends_on:
       - db
     volumes:
@@ -17,7 +17,7 @@ services:
     ports:
       - "8001:8000"
     environment:
-      - DATABASE_URL=postgres://user:password@db:5432/core_db
+      - DATABASE_URL=postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME_CORE}
     depends_on:
       - db
     volumes:
@@ -36,8 +36,8 @@ services:
   db:
     image: postgres:13
     environment:
-      - POSTGRES_USER=ethancavill
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:

@@ -1,33 +1,65 @@
-from app.models import User
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
+from app.models import User as UserTable
+from pydantic import BaseModel
+from passlib.context import CryptContext
 from sqlmodel import Session
 from typing import Optional
-import bcrypt
+from app.database import get_session
 
-from app.routers.auth import UserRegistration
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
+class User(BaseModel):
+    username: str
+    email: str
+    password: Optional[str] = None
 
-async def register_user(user_data: UserRegistration):
+
+class UserInDB(User):
+    hashed_password: str
+
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+
+def get_user(
+    username: str, session: Session = Depends(get_session)
+) -> Optional[UserInDB]:
+    user = session.get(UserTable, username)
+    if user:
+        return UserInDB(
+            username=user.username, email=user.email, hashed_password=user.password
+        )
+
+
+async def register_user(user_data: User, session: Session):
     # Check if the username or email already exists in the database
-    existing_user = await User.get_or_none(
-        username=user_data.username
-    ) or await User.get_or_none(email=user_data.email)
+    existing_user = session.get(UserTable, user_data.username) or session.get(
+        UserTable, user_data.email
+    )
     if existing_user:
         raise HTTPException(status_code=400, detail="Username or email already exists")
 
     # Hash the user's password
-    hashed_password = bcrypt.hash(user_data.password)
+    hashed_password = get_password_hash(user_data.password)
 
     # Create a new user with the hashed password
-    new_user = User(
+    new_user = UserTable(
         username=user_data.username, email=user_data.email, password=hashed_password
     )
 
-    # Save the new user to the database
-    await new_user.save()
+    # Add the new user to the session
+    session.add(new_user)
+
+    # Commit the transaction
+    session.commit()
+
+    # Refresh the user object to get the ID assigned by the database
+    session.refresh(new_user)
 
     return new_user.id
-
-def get_user_by_id(session: Session, user_id: int) -> Optional[User]:
-    return User.get_or_none(session, user_id)
