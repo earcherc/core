@@ -7,6 +7,7 @@ from sqlmodel import Session, col, or_, select
 from jose import JWTError, jwt
 from typing import Annotated, Optional, Union
 from app import get_session, Config
+from ..routers import TokenData
 from fastapi.security import OAuth2PasswordBearer
 
 
