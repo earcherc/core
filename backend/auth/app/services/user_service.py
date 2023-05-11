@@ -113,9 +113,11 @@ async def get_current_user(
         if username is None:
             raise credentials_exception
         token_data = TokenData(username=username)
+        if token_data.username is None:
+            raise credentials_exception
     except (JWTError, ValueError) as e:
         raise credentials_exception from e
-    user = get_user(username, session)
+    user = get_user(token_data.username, session)
     if user is None:
         raise credentials_exception
     return user
