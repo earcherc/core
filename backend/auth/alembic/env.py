@@ -1,9 +1,10 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import pool, engine_from_config
 
 from alembic import context
+from sqlmodel import SQLModel
+
 
 from app.database import Config
 from app.models import User
@@ -32,7 +33,7 @@ if config.config_file_name is not None:
 
 # target_metadata = None
 # target_metadata = User.metadata.merge(Profile.metadata).merge(Event.metadata)
-target_metadata = User.metadata
+target_metadata = SQLModel.metadata
 
 
 # other values from the config, defined by the needs of env.py,
@@ -79,7 +80,14 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+        context.configure(
+            connection=connection,
+            target_metadata=target_metadata,
+            # Use the user_module_prefix to import the AutoString type;
+            # was an annoying bug.
+            # Can also add a batch option if using sqllite.
+            user_module_prefix="sqlmodel.sql.sqltypes.",
+        )
 
         with context.begin_transaction():
             context.run_migrations()
