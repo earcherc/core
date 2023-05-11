@@ -1,14 +1,23 @@
 from fastapi import APIRouter, HTTPException, Depends, status
-from app.services import user_service
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
+from typing import Annotated, Optional
+from datetime import timedelta
 from app.database import get_session
-from fastapi.security import OAuth2PasswordBearer
-from typing import Annotated
+from pydantic import BaseModel
+from app.services import *
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
 
 
 router = APIRouter()
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 @router.get("/items/")
@@ -17,11 +26,9 @@ async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
 
 
 @router.post("/register", status_code=201)
-async def register_user(
-    user: user_service.User, session: Session = Depends(get_session)
-):
-    # Call user_service.register_user() to create a new user
-    user_id = await user_service.register_user(user, session)
+async def register_user(user: User, session: Session = Depends(get_session)):
+    # Call register_user() to create a new user
+    user_id = await register_user(user, session)
 
     if not user_id:
         raise HTTPException(status_code=400, detail="Registration failed")
@@ -30,27 +37,30 @@ async def register_user(
 
 
 @router.post("/login")
-async def login(username: str, password: str, session: Session = Depends(get_session)):
-    user = user_service.get_user(username, session)
+async def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    session: Session = Depends(get_session),
+):
+    user = get_user(form_data.username, session)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username",
         )
-    if not user_service.verify_password(password, user.hashed_password):
+    if not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect password",
         )
-    return {"username": username}
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/users/me", response_model=user_service.User)
-async def read_user_me(username: str, session: Session = Depends(get_session)):
-    user = user_service.get_user(username, session)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
-        )
-    return user
+@router.get("/users/me", response_model=User)
+async def read_user_me(
+    current_user: User = Depends(get_current_user),
+):
+    return current_user

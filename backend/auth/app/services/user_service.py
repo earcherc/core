@@ -1,30 +1,32 @@
-from fastapi import HTTPException, Depends
+from datetime import datetime, timedelta
+from fastapi import HTTPException, Depends, status
 from app.models import User as UserTable
 from pydantic import BaseModel
 from passlib.context import CryptContext
 from sqlmodel import Session, col, or_, select
-from typing import Optional
+from jose import JWTError, jwt
+from typing import Annotated, Optional, Union
 from app.database import get_session
+from fastapi.security import OAuth2PasswordBearer
+from config import Config
+
+from app.routers.auth import TokenData
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 class User(BaseModel):
     username: str
     email: str
-    password: Optional[str] = None
+    password: Union[str, None] = None
+    disabled: Union[bool, None] = None
 
 
 class UserInDB(User):
     hashed_password: str
-
-
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
 
 
 def get_user(
@@ -71,3 +73,56 @@ async def register_user(user_data: User, session: Session):
     session.refresh(new_user)
 
     return new_user.id
+
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    if Config.SECRET_KEY is None or Config.ALGORITHM is None:
+        raise ValueError("Invalid configuration: missing SECRET_KEY or ALGORITHM")
+    encoded_jwt = jwt.encode(to_encode, Config.SECRET_KEY, algorithm=Config.ALGORITHM)
+    return encoded_jwt
+
+
+async def get_current_user(
+    token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)
+):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        if Config.SECRET_KEY is None or Config.ALGORITHM is None:
+            raise ValueError("Invalid configuration: missing SECRET_KEY or ALGORITHM")
+        payload = jwt.decode(token, Config.SECRET_KEY, algorithms=[Config.ALGORITHM])
+        username: str = payload.get("sub", "")
+        if username is None:
+            raise credentials_exception
+        token_data = TokenData(username=username)
+    except (JWTError, ValueError) as e:
+        raise credentials_exception from e
+    user = get_user(username, session)
+    if user is None:
+        raise credentials_exception
+    return user
+
+
+async def get_current_active_user(
+    current_user: Annotated[User, Depends(get_current_user)]
+):
+    if current_user.disabled:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
