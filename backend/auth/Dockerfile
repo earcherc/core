@@ -17,7 +17,7 @@ EXPOSE 8000
 ENV NAME Auth 
 
 # Make the shell script executable
-RUN chmod +x run.sh
+RUN chmod +x ./run.sh
 
 # Run the shell script when the container launches
 CMD ["./run.sh"]

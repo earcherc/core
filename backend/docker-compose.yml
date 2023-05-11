@@ -5,8 +5,8 @@ services:
     build: ./auth
     ports:
       - "8000:8000"
-    environment:
-      - DATABASE_URL=postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME_AUTH}
+    env_file:
+      - .env
     depends_on:
       - db
     volumes:
@@ -16,8 +16,8 @@ services:
     build: ./core
     ports:
       - "8001:8000"
-    environment:
-      - DATABASE_URL=postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME_CORE}
+    env_file:
+      - .env
     depends_on:
       - db
     volumes:
@@ -27,6 +27,8 @@ services:
     build: ./gateway
     ports:
       - "8002:8000"
+    env_file:
+      - .env
     depends_on:
       - auth
       - core
