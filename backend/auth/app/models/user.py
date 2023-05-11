@@ -9,6 +9,7 @@ class User(SQLModel, table=True):
     username: str = Field(default=None, index=True, unique=True)
     email: str = Field(default=None, index=True, unique=True)
     password: str
+    disabled: bool = Field(default=False)
 
     @classmethod
     def get_or_none(cls, session: Session, id_: int) -> Optional["User"]:
