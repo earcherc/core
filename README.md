@@ -37,3 +37,6 @@ pip install -r requirements.txt
 ```
 docker compose up --build
 ```
+
+`docker exec -it backend-auth-1 alembic revision --autogenerate -m "Initial migration"`
+
