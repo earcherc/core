@@ -2,8 +2,18 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from app.services import user_service
 from sqlmodel import Session
 from app.database import get_session
+from fastapi.security import OAuth2PasswordBearer
+from typing import Annotated
+
 
 router = APIRouter()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+@router.get("/items/")
+async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
+    return {"token": token}
 
 
 @router.post("/register", status_code=201)
