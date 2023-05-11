@@ -38,5 +38,11 @@ pip install -r requirements.txt
 docker compose up --build
 ```
 
-`docker exec -it backend-auth-1 alembic revision --autogenerate -m "Initial migration"`
 
+### Useful Docker commands
+```
+docker exec -it backend-auth-1 alembic revision --autogenerate -m "Initial migration"
+docker exec -it e5ea076b018d psql -U ethancavill -d auth_db
+docker volume ls
+docker exec -it backend-auth-1 alembic upgrade head
+```
