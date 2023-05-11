@@ -32,7 +32,8 @@ class UserInDB(User):
 def get_user(
     username: str, session: Session = Depends(get_session)
 ) -> Optional[UserInDB]:
-    user = session.get(UserTable, username)
+    statement = select(UserTable).where(UserTable.username == username)
+    user = session.exec(statement).first()
     if user:
         return UserInDB(
             username=user.username, email=user.email, hashed_password=user.password

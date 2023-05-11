@@ -27,7 +27,7 @@ async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
 
 
 @router.post("/register", status_code=201)
-async def register_user(user: User, session: Session = Depends(get_session)):
+async def register(user: User, session: Session = Depends(get_session)):
     # Call register_user() to create a new user
     user_id = await register_user(user, session)
 
