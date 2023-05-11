@@ -2,7 +2,7 @@ from fastapi import HTTPException, Depends
 from app.models import User as UserTable
 from pydantic import BaseModel
 from passlib.context import CryptContext
-from sqlmodel import Session
+from sqlmodel import Session, col, or_, select
 from typing import Optional
 from app.database import get_session
 
@@ -39,9 +39,17 @@ def get_user(
 
 async def register_user(user_data: User, session: Session):
     # Check if the username or email already exists in the database
-    existing_user = session.get(UserTable, user_data.username) or session.get(
-        UserTable, user_data.email
+    statement = select(UserTable).where(
+        or_(
+            # Use col to trick editor that this is a speical
+            # SQLModel column and not just a optional class instance attribute
+            col(UserTable.username) == user_data.username,
+            col(UserTable.email) == user_data.email,
+        )
     )
+    # Use the newer session.exec over session.query; resembles actual SQL more
+    # Also, session.get just returns the id of the db object
+    existing_user = session.exec(statement).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Username or email already exists")
 
