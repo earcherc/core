@@ -1,16 +1,13 @@
 from datetime import datetime, timedelta
 from fastapi import HTTPException, Depends, status
-from app.models import User as UserTable
+from ..models import User as UserTable
 from pydantic import BaseModel
 from passlib.context import CryptContext
 from sqlmodel import Session, col, or_, select
 from jose import JWTError, jwt
 from typing import Annotated, Optional, Union
-from app.database import get_session
+from app import get_session, Config
 from fastapi.security import OAuth2PasswordBearer
-from config import Config
-
-from app.routers.auth import TokenData
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

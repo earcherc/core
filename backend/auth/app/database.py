@@ -1,5 +1,5 @@
 from sqlmodel import create_engine, Session
-from .config import Config
+from app import Config
 
 SQLALCHEMY_DATABASE_URL = f"postgresql://{Config.POSTGRES_USER}:{Config.POSTGRES_PASSWORD}@{Config.DATABASE_HOST}/{Config.DATABASE_NAME}"
 

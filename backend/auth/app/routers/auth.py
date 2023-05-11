@@ -3,10 +3,9 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
 from typing import Annotated, Optional
 from datetime import timedelta
-from app.database import get_session
 from pydantic import BaseModel
-from app.services import *
-from config import Config
+from ..services import *
+from app import Config, get_session
 
 
 class Token(BaseModel):
