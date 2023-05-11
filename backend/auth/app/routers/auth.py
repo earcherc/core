@@ -1,20 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
-from typing import Annotated, Optional
+from typing import Annotated
 from datetime import timedelta
-from pydantic import BaseModel
+from ..schemas import User
 from ..services import *
 from app import Config, get_session
-
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-
-class TokenData(BaseModel):
-    username: Optional[str] = None
 
 
 router = APIRouter()

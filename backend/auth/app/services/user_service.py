@@ -5,26 +5,15 @@ from pydantic import BaseModel
 from passlib.context import CryptContext
 from sqlmodel import Session, col, or_, select
 from jose import JWTError, jwt
-from typing import Annotated, Optional, Union
+from typing import Annotated, Optional
 from app import get_session, Config
-from ..routers import TokenData
+from ..schemas import UserInDB, User, TokenData
 from fastapi.security import OAuth2PasswordBearer
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-class User(BaseModel):
-    username: str
-    email: str
-    password: Union[str, None] = None
-    disabled: Union[bool, None] = None
-
-
-class UserInDB(User):
-    hashed_password: str
 
 
 def get_user(
