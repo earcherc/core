@@ -17,7 +17,7 @@ config = context.config
 # Overwrite the sqlalchemy.url with the one from the config
 config.set_main_option(
     "sqlalchemy.url",
-    f"postgresql://{Config.DATABASE_USERNAME}:{Config.DATABASE_PASSWORD}@{Config.DATABASE_HOST}/{Config.DATABASE_NAME}",
+    f"postgresql://{Config.POSTGRES_USER}:{Config.POSTGRES_PASSWORD}@{Config.DATABASE_HOST}/{Config.DATABASE_NAME}",
 )
 
 # Interpret the config file for Python logging.
