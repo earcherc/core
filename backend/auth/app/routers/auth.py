@@ -6,6 +6,7 @@ from datetime import timedelta
 from app.database import get_session
 from pydantic import BaseModel
 from app.services import *
+from config import Config
 
 
 class Token(BaseModel):
@@ -52,7 +53,9 @@ async def login(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect password",
         )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    if Config.ACCESS_TOKEN_EXPIRE_MINUTES is None:
+        raise ValueError("Invalid configuration: missing ACCESS_TOKEN_EXPIRE_MINUTES")
+    access_token_expires = timedelta(minutes=int(Config.ACCESS_TOKEN_EXPIRE_MINUTES))
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
