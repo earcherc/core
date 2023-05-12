@@ -11,3 +11,10 @@ from .user_profile_service import (
     update_user_profile,
     delete_user_profile,
 )
+
+from .daily_goal_service import (
+    get_daily_goal,
+    create_daily_goal,
+    update_daily_goal,
+    delete_daily_goal,
+)
