@@ -1,19 +1,13 @@
 from fastapi import APIRouter, HTTPException, Depends, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
-from typing import Annotated
 from datetime import timedelta
-from ..schemas import User
+from ..schemas import User, Token
 from ..services import *
 from app import Config, get_session
 
 
 router = APIRouter()
-
-
-@router.get("/items/")
-async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
-    return {"token": token}
 
 
 @router.post("/register", status_code=201)
@@ -27,7 +21,7 @@ async def register(user: User, session: Session = Depends(get_session)):
     return {"user_id": user_id}
 
 
-@router.post("/login")
+@router.post("/login", response_model=Token)
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     session: Session = Depends(get_session),
@@ -52,14 +46,7 @@ async def login(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/users/me", response_model=User)
-async def read_user_me(
-    current_user: User = Depends(get_current_user),
-):
-    return current_user
-
-
 @router.post("/logout")
 async def logout(response: Response):
     response.delete_cookie(key="access_token")
-    return {"detail": "Successfully logged out"}
+    return {"detail": "Successfully logged wout"}

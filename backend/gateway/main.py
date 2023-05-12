@@ -1,8 +1,6 @@
 from fastapi import FastAPI
+from app.routers import gateway
 
 app = FastAPI()
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello, this is the Gateway Service!"}
+app.include_router(gateway.router, prefix="/gateway", tags=["gateway"])

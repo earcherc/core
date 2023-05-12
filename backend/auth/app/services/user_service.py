@@ -1,13 +1,12 @@
 from datetime import datetime, timedelta
 from fastapi import HTTPException, Depends, status
 from ..models import User as UserTable
-from pydantic import BaseModel
 from passlib.context import CryptContext
 from sqlmodel import Session, col, or_, select
-from jose import JWTError, jwt
-from typing import Annotated, Optional
+from jose import jwt
+from typing import Optional
 from app import get_session, Config
-from ..schemas import UserInDB, User, TokenData
+from ..schemas import UserInDB, User
 from fastapi.security import OAuth2PasswordBearer
 
 
@@ -82,37 +81,3 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
         raise ValueError("Invalid configuration: missing SECRET_KEY or ALGORITHM")
     encoded_jwt = jwt.encode(to_encode, Config.SECRET_KEY, algorithm=Config.ALGORITHM)
     return encoded_jwt
-
-
-async def get_current_user(
-    token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)
-):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        if Config.SECRET_KEY is None or Config.ALGORITHM is None:
-            raise ValueError("Invalid configuration: missing SECRET_KEY or ALGORITHM")
-        payload = jwt.decode(token, Config.SECRET_KEY, algorithms=[Config.ALGORITHM])
-        username: str = payload.get("sub", "")
-        if username is None:
-            raise credentials_exception
-        token_data = TokenData(username=username)
-        if token_data.username is None:
-            raise credentials_exception
-    except (JWTError, ValueError) as e:
-        raise credentials_exception from e
-    user = get_user(token_data.username, session)
-    if user is None:
-        raise credentials_exception
-    return user
-
-
-async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)]
-):
-    if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
