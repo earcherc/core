@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from fastapi import HTTPException, Depends, status
+from fastapi import HTTPException, Depends
 from ..models import User as UserTable
 from passlib.context import CryptContext
 from sqlmodel import Session, col, or_, select
@@ -7,12 +7,9 @@ from jose import jwt
 from typing import Optional
 from app import get_session, Config
 from ..schemas import UserInDB, User
-from fastapi.security import OAuth2PasswordBearer
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 def get_user(
