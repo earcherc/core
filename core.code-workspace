@@ -2,14 +2,11 @@
 	"folders": [
 		{
 			"path": ".",
-			"name": "ROOT"
+			"name": "Root"
 		},
 		{
-			"path": "frontend"
-		},
-		{
-			"path": "backend",
-			"name": "backend"
+			"path": "frontend",
+			"name": "Frontend"
 		},
 		{
 			"path": "backend/auth",
