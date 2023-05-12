@@ -1,8 +1,7 @@
 from fastapi import FastAPI
+from app.routers import core
+
 
 app = FastAPI()
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello, this is the Core Service!"}
+app.include_router(core.router, prefix="/core", tags=["Core"])

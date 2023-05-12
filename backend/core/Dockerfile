@@ -16,5 +16,8 @@ EXPOSE 8001
 # Define environment variable
 ENV NAME Core
 
-# Run main.py when the container launches
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
+# Make the shell script executable
+RUN chmod +x ./run.sh
+
+# Run the shell script when the container launches
+CMD ["./run.sh"]
