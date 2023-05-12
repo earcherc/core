@@ -3,20 +3,20 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class UserProfileBase(BaseModel):
+class UserProfile(BaseModel):
     favorite_color: Optional[str] = None
     bio: Optional[str] = None
 
 
-class UserProfileCreate(UserProfileBase):
+class UserProfileCreate(UserProfile):
     user_id: int
 
 
-class UserProfileUpdate(UserProfileBase):
+class UserProfileUpdate(UserProfile):
     pass
 
 
-class UserProfileInDB(UserProfileBase):
+class UserProfileInDB(UserProfile):
     id: int
     user_id: int
 
@@ -24,83 +24,83 @@ class UserProfileInDB(UserProfileBase):
         orm_mode = True
 
 
-class StudyBlockBase(BaseModel):
+class StudyBlock(BaseModel):
     start: datetime
     end: datetime
     title: str
     rating: float
 
 
-class StudyBlockCreate(StudyBlockBase):
+class StudyBlockCreate(StudyBlock):
     user_profile_id: int
     daily_goal_id: int
     study_category_id: int
 
 
-class StudyBlockUpdate(StudyBlockBase):
+class StudyBlockUpdate(StudyBlock):
     pass
 
 
-class StudyBlockInDB(StudyBlockBase):
+class StudyBlockInDB(StudyBlock):
     id: int
 
     class Config:
         orm_mode = True
 
 
-class DailyGoalBase(BaseModel):
+class DailyGoal(BaseModel):
     quantity: int
     block_size: int
 
 
-class DailyGoalCreate(DailyGoalBase):
+class DailyGoalCreate(DailyGoal):
     user_profile_id: int
 
 
-class DailyGoalUpdate(DailyGoalBase):
+class DailyGoalUpdate(DailyGoal):
     pass
 
 
-class DailyGoalInDB(DailyGoalBase):
+class DailyGoalInDB(DailyGoal):
     id: int
 
     class Config:
         orm_mode = True
 
 
-class StudyCategoryBase(BaseModel):
+class StudyCategory(BaseModel):
     title: str
 
 
-class StudyCategoryCreate(StudyCategoryBase):
+class StudyCategoryCreate(StudyCategory):
     pass
 
 
-class StudyCategoryUpdate(StudyCategoryBase):
+class StudyCategoryUpdate(StudyCategory):
     pass
 
 
-class StudyCategoryInDB(StudyCategoryBase):
+class StudyCategoryInDB(StudyCategory):
     id: int
 
     class Config:
         orm_mode = True
 
 
-class UserProfileCategoryLinkBase(BaseModel):
+class UserProfileCategoryLink(BaseModel):
     pass
 
 
-class UserProfileCategoryLinkCreate(UserProfileCategoryLinkBase):
+class UserProfileCategoryLinkCreate(UserProfileCategoryLink):
     user_profile_id: int
     study_category_id: int
 
 
-class UserProfileCategoryLinkUpdate(UserProfileCategoryLinkBase):
+class UserProfileCategoryLinkUpdate(UserProfileCategoryLink):
     pass
 
 
-class UserProfileCategoryLinkInDB(UserProfileCategoryLinkBase):
+class UserProfileCategoryLinkInDB(UserProfileCategoryLink):
     user_profile_id: int
     study_category_id: int
 
