@@ -6,12 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 router = APIRouter()
 
 
-@router.get("/")
-async def root():
-    return {"message": "Hello, this is the Gateway Service!"}
-
-
-@router.post("/auth/register")
+@router.post("/register")
 async def register(user: User):
     try:
         response = await forward_request(
@@ -22,7 +17,7 @@ async def register(user: User):
     return response
 
 
-@router.post("/auth/login")
+@router.post("/login")
 async def login(data: OAuth2PasswordRequestForm = Depends()):
     try:
         response = await forward_request(
