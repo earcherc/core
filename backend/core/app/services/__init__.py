@@ -18,3 +18,10 @@ from .daily_goal_service import (
     update_daily_goal,
     delete_daily_goal,
 )
+
+from .study_category_service import (
+    get_all_study_categories,
+    create_study_category,
+    update_study_category,
+    delete_study_category,
+)
