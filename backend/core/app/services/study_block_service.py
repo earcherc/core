@@ -1,5 +1,5 @@
 from ..models import StudyBlock as StudyBlockTable
-from sqlmodel import Session, select, update, delete
+from sqlmodel import Session, select, delete
 from typing import Optional
 from ..schemas import StudyBlockCreate, StudyBlockUpdate, StudyBlockInDB
 
