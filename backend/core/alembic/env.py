@@ -1,24 +1,40 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import pool, engine_from_config
 
 from alembic import context
+from sqlmodel import SQLModel
+
+
+from app.config import Config
+from app.models import *
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
+# Overwrite the sqlalchemy.url with the one from the config
+config.set_main_option(
+    "sqlalchemy.url",
+    f"postgresql://{Config.POSTGRES_USER}:{Config.POSTGRES_PASSWORD}@{Config.DATABASE_HOST}/{Config.DATABASE_NAME}",
+)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+
+# target_metadata = None
+# target_metadata = User.metadata.merge(Profile.metadata).merge(Event.metadata)
+target_metadata = SQLModel.metadata
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -64,7 +80,14 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+        context.configure(
+            connection=connection,
+            target_metadata=target_metadata,
+            # Use the user_module_prefix to import the AutoString type;
+            # was an annoying bug.
+            # Can also add a batch option if using sqllite.
+            user_module_prefix="sqlmodel.sql.sqltypes.",
+        )
 
         with context.begin_transaction():
             context.run_migrations()

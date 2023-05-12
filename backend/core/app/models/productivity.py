@@ -1,5 +1,5 @@
 from typing import Optional, List
-from sqlmodel import Field, Relationship, SQLModel, Session
+from sqlmodel import Field, Relationship, SQLModel
 from datetime import datetime
 
 metadata = SQLModel.metadata

@@ -6,7 +6,7 @@ from alembic import context
 from sqlmodel import SQLModel
 
 
-from app.database import Config
+from app.config import Config
 from app.models import User
 
 
