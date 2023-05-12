@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, HTTPException, Depends, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
 from typing import Annotated
@@ -57,3 +57,9 @@ async def read_user_me(
     current_user: User = Depends(get_current_user),
 ):
     return current_user
+
+
+@router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie(key="access_token")
+    return {"detail": "Successfully logged out"}
