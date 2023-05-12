@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import core, study_block, user_profile, daily_goal, study_category
+from app.routers import study_block, user_profile, daily_goal, study_category
 
 
 app = FastAPI()
