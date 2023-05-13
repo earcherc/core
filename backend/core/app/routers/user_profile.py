@@ -12,16 +12,12 @@ async def create_user_profile(
     user_profile: UserProfileCreate, session: Session = Depends(get_session)
 ):
     db_user_profile = await create_user_profile_func(user_profile, session)
-    if not db_user_profile:
-        raise HTTPException(status_code=400, detail="User profile creation failed")
     return db_user_profile
 
 
 @router.get("/{user_id}", response_model=UserProfileInDB)
 async def get_user_profile(user_id: int, session: Session = Depends(get_session)):
     db_user_profile = await get_user_profile_func(user_id, session)
-    if not db_user_profile:
-        raise HTTPException(status_code=404, detail="User profile not found")
     return db_user_profile
 
 
@@ -34,8 +30,6 @@ async def update_user_profile(
     updated_user_profile_id = await update_user_profile_func(
         user_profile_id, user_profile, session
     )
-    if not updated_user_profile_id:
-        raise HTTPException(status_code=404, detail="User profile not found")
     return {"user_profile_id": updated_user_profile_id}
 
 
@@ -44,6 +38,4 @@ async def delete_user_profile(
     user_profile_id: int, session: Session = Depends(get_session)
 ):
     deleted_user_profile_id = await delete_user_profile_func(user_profile_id, session)
-    if not deleted_user_profile_id:
-        raise HTTPException(status_code=404, detail="User profile not found")
     return {"user_profile_id": deleted_user_profile_id}
