@@ -18,12 +18,7 @@ async def create_study_category(
     study_category: StudyCategoryCreate,
     current_user: User = Depends(get_current_active_user),
 ):
-    try:
-        response = await forward_request(
-            "/", params=study_category.dict(), service="core"
-        )
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+    response = await forward_request("/", params=study_category.dict(), service="core")
     return response
 
 
@@ -31,10 +26,7 @@ async def create_study_category(
 async def read_study_category(
     study_category_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    try:
-        response = await forward_request(f"/{study_category_id}", service="core")
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+    response = await forward_request(f"/{study_category_id}", service="core")
     return response
 
 
@@ -44,14 +36,11 @@ async def update_study_category(
     study_category: StudyCategoryUpdate,
     current_user: User = Depends(get_current_active_user),
 ):
-    try:
-        response = await forward_request(
-            f"/{study_category_id}",
-            params=study_category.dict(),
-            service="core",
-        )
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+    response = await forward_request(
+        f"/{study_category_id}",
+        params=study_category.dict(),
+        service="core",
+    )
     return response
 
 
@@ -59,9 +48,5 @@ async def update_study_category(
 async def delete_study_category(
     study_category_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    try:
-        response = await forward_request(f"/{study_category_id}", service="core")
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
-
+    response = await forward_request(f"/{study_category_id}", service="core")
     return response

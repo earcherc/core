@@ -11,10 +11,7 @@ router = APIRouter()
 async def create_daily_goal(
     daily_goal: DailyGoalCreate, current_user: User = Depends(get_current_active_user)
 ):
-    try:
-        response = await forward_request("/", params=daily_goal.dict(), service="core")
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+    response = await forward_request("/", params=daily_goal.dict(), service="core")
     return response
 
 
@@ -22,10 +19,7 @@ async def create_daily_goal(
 async def read_daily_goal(
     daily_goal_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    try:
-        response = await forward_request(f"/{daily_goal_id}", service="core")
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+    response = await forward_request(f"/{daily_goal_id}", service="core")
     return response
 
 
@@ -35,14 +29,11 @@ async def update_daily_goal(
     daily_goal: DailyGoalUpdate,
     current_user: User = Depends(get_current_active_user),
 ):
-    try:
-        response = await forward_request(
-            f"/{daily_goal_id}",
-            params=daily_goal.dict(),
-            service="core",
-        )
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+    response = await forward_request(
+        f"/{daily_goal_id}",
+        params=daily_goal.dict(),
+        service="core",
+    )
     return response
 
 
@@ -50,9 +41,5 @@ async def update_daily_goal(
 async def delete_daily_goal(
     daily_goal_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    try:
-        response = await forward_request(f"/{daily_goal_id}", service="core")
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
-
+    response = await forward_request(f"/{daily_goal_id}", service="core")
     return response

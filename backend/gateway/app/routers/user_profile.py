@@ -14,12 +14,10 @@ async def create_user_profile(
 ):
     if current_user.user_id:
         user_profile.user_id = current_user.user_id
-    try:
-        response = await forward_request(
-            "user_profile/", params=user_profile.dict(), service="core"
-        )
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+    response = await forward_request(
+        "user_profile/", params=user_profile.dict(), service="core"
+    )
     return response
 
 
@@ -27,12 +25,7 @@ async def create_user_profile(
 async def read_user_profile(
     user_profile_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    try:
-        response = await forward_request(
-            f"user_profile/{user_profile_id}", service="core"
-        )
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+    response = await forward_request(f"user_profile/{user_profile_id}", service="core")
     return response
 
 
@@ -42,14 +35,11 @@ async def update_user_profile(
     user_profile: UserProfile,
     current_user: User = Depends(get_current_active_user),
 ):
-    try:
-        response = await forward_request(
-            f"user_profile/{user_profile_id}",
-            params=user_profile.dict(),
-            service="core",
-        )
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+    response = await forward_request(
+        f"user_profile/{user_profile_id}",
+        params=user_profile.dict(),
+        service="core",
+    )
     return response
 
 
@@ -57,11 +47,6 @@ async def update_user_profile(
 async def delete_user_profile(
     user_profile_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    try:
-        response = await forward_request(
-            f"user_profile/{user_profile_id}", service="core"
-        )
-    except HTTPException as exc:
-        raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+    response = await forward_request(f"user_profile/{user_profile_id}", service="core")
 
     return response
