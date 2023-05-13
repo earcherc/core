@@ -3,7 +3,6 @@ from ..models import UserProfile as UserProfileTable
 from ..schemas import UserProfileInDB, UserProfile, UserProfileCreate
 from sqlmodel import Session, select
 from fastapi import HTTPException
-from sqlalchemy.exc import IntegrityError
 
 
 async def get_user_profile_func(
@@ -32,16 +31,11 @@ async def create_user_profile_func(
         )
 
     user_profile = UserProfileTable(**user_profile_data.dict())
-    try:
-        session.add(user_profile)
-        session.commit()
-        session.refresh(user_profile)
-    except IntegrityError:
-        session.rollback()
-        raise HTTPException(
-            status_code=400,
-            detail="Failed to create user profile, possibly due to a constraint violation.",
-        )
+
+    session.add(user_profile)
+    session.commit()
+    session.refresh(user_profile)
+
     return UserProfileInDB(**user_profile.__dict__)
 
 
