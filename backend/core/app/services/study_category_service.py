@@ -5,14 +5,14 @@ from ..models import StudyCategory as StudyCategoryTable
 from ..schemas import StudyCategory, StudyCategoryInDB
 
 
-async def get_all_study_categories(session: Session) -> List[StudyCategoryInDB]:
+async def get_all_study_categories_func(session: Session) -> List[StudyCategoryInDB]:
     study_category_statement = select(StudyCategoryTable)
     study_categories = session.exec(study_category_statement).all()
 
     return [StudyCategoryInDB(**stc.__dict__) for stc in study_categories]
 
 
-async def create_study_category(
+async def create_study_category_func(
     study_category_data: StudyCategory, session: Session
 ) -> StudyCategoryInDB:
     new_study_category = StudyCategoryTable(**study_category_data.dict())
@@ -23,7 +23,7 @@ async def create_study_category(
     return StudyCategoryInDB(**new_study_category.__dict__)
 
 
-async def update_study_category(
+async def update_study_category_func(
     study_category_id: int, study_category_data: StudyCategory, session: Session
 ) -> StudyCategoryInDB:
     study_category_statement = select(StudyCategoryTable).where(
@@ -44,7 +44,7 @@ async def update_study_category(
     return StudyCategoryInDB(**study_category.__dict__)
 
 
-async def delete_study_category(study_category_id: int, session: Session):
+async def delete_study_category_func(study_category_id: int, session: Session):
     study_category_statement = select(StudyCategoryTable).where(
         StudyCategoryTable.id == study_category_id
     )

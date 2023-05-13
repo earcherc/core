@@ -41,8 +41,10 @@ async def login(
         raise ValueError("Invalid configuration: missing ACCESS_TOKEN_EXPIRE_MINUTES")
     access_token_expires = timedelta(minutes=int(Config.ACCESS_TOKEN_EXPIRE_MINUTES))
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={"sub": user.username, "user_id": user.id, "disabled": user.disabled},
+        expires_delta=access_token_expires,
     )
+
     return {"access_token": access_token, "token_type": "bearer"}
 
 

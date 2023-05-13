@@ -4,7 +4,7 @@ from ..schemas import DailyGoal, DailyGoalInDB
 from sqlmodel import Session, select
 
 
-async def create_daily_goal(daily_goal_data: DailyGoal, session: Session):
+async def create_daily_goal_func(daily_goal_data: DailyGoal, session: Session):
     daily_goal = DailyGoalTable(**daily_goal_data.dict())
     session.add(daily_goal)
     session.commit()
@@ -12,7 +12,7 @@ async def create_daily_goal(daily_goal_data: DailyGoal, session: Session):
     return DailyGoalInDB(**daily_goal.__dict__)
 
 
-async def get_daily_goal(daily_goal_id: int, session: Session):
+async def get_daily_goal_func(daily_goal_id: int, session: Session):
     daily_goal_statement = select(DailyGoalTable).where(
         DailyGoalTable.id == daily_goal_id
     )
@@ -22,13 +22,13 @@ async def get_daily_goal(daily_goal_id: int, session: Session):
     return None
 
 
-async def get_all_daily_goals(session: Session) -> List[DailyGoalInDB]:
+async def get_all_daily_goals_func(session: Session) -> List[DailyGoalInDB]:
     daily_goals_statement = select(DailyGoalTable)
     daily_goals = session.exec(daily_goals_statement).all()
     return [DailyGoalInDB(**dg.__dict__) for dg in daily_goals]
 
 
-async def update_daily_goal(
+async def update_daily_goal_func(
     daily_goal_id: int, daily_goal_data: DailyGoal, session: Session
 ):
     daily_goal_statement = select(DailyGoalTable).where(
@@ -47,7 +47,7 @@ async def update_daily_goal(
     return DailyGoalInDB(**daily_goal.__dict__)
 
 
-async def delete_daily_goal(daily_goal_id: int, session: Session):
+async def delete_daily_goal_func(daily_goal_id: int, session: Session):
     daily_goal_statement = select(DailyGoalTable).where(
         DailyGoalTable.id == daily_goal_id
     )

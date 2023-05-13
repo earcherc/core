@@ -33,8 +33,11 @@ async def forward_request(
             response.raise_for_status()
         except httpx.HTTPStatusError as http_err:
             if response:
+                response_data = response.json()
+                error_message = response_data.get("detail", str(http_err))
+
                 raise HTTPException(
-                    status_code=response.status_code, detail=str(http_err)
+                    status_code=response.status_code, detail=error_message
                 )
             else:
                 raise HTTPException(status_code=500, detail=str(http_err))
@@ -53,17 +56,19 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
             raise ValueError("Invalid configuration: missing SECRET_KEY or ALGORITHM")
         payload = jwt.decode(token, Config.SECRET_KEY, algorithms=[Config.ALGORITHM])
         username: str = payload.get("sub", "")
-        if username is None:
+        user_id: int = payload.get("user_id", 0)
+        disabled: bool = payload.get("disabled", False)
+        if username is None or user_id == 0:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = TokenData(username=username, user_id=user_id, disabled=disabled)
     except JWTError:
         raise credentials_exception
     return token_data
 
 
 async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)]
+    token_data: Annotated[TokenData, Depends(get_current_user)]
 ):
-    if current_user.disabled:
+    if token_data.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
+    return token_data

@@ -17,10 +17,16 @@ def get_user(
 ) -> Optional[UserInDB]:
     statement = select(UserTable).where(UserTable.username == username)
     user = session.exec(statement).first()
-    if user:
-        return UserInDB(
-            username=user.username, email=user.email, hashed_password=user.password
-        )
+    if user is None:
+        return None
+    assert user.id is not None
+    return UserInDB(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        hashed_password=user.password,
+        disabled=user.disabled,
+    )
 
 
 async def register_user(user_data: User, session: Session):

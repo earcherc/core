@@ -4,7 +4,7 @@ from typing import Optional
 from ..schemas import StudyBlockCreate, StudyBlockUpdate, StudyBlockInDB
 
 
-async def create_study_block(study_block_data: StudyBlockCreate, session: Session):
+async def create_study_block_func(study_block_data: StudyBlockCreate, session: Session):
     new_study_block = StudyBlockTable(**study_block_data.dict())
 
     session.add(new_study_block)
@@ -16,14 +16,16 @@ async def create_study_block(study_block_data: StudyBlockCreate, session: Sessio
     return new_study_block.id
 
 
-def get_study_block(study_block_id: int, session: Session) -> Optional[StudyBlockInDB]:
+def get_study_block_func(
+    study_block_id: int, session: Session
+) -> Optional[StudyBlockInDB]:
     statement = select(StudyBlockTable).where(StudyBlockTable.id == study_block_id)
     study_block = session.exec(statement).first()
     if study_block:
         return StudyBlockInDB(**study_block.__dict__)
 
 
-async def update_study_block(
+async def update_study_block_func(
     study_block_id: int, study_block_data: StudyBlockUpdate, session: Session
 ):
     study_block_statement = select(StudyBlockTable).where(
@@ -46,7 +48,7 @@ async def update_study_block(
     return StudyBlockInDB(**study_block.__dict__)
 
 
-async def delete_study_block(study_block_id: int, session: Session):
+async def delete_study_block_func(study_block_id: int, session: Session):
     study_block_statement = select(StudyBlockTable).where(
         StudyBlockTable.id == study_block_id
     )

@@ -11,6 +11,7 @@ class User(BaseModel):
 
 
 class UserInDB(User):
+    id: int
     hashed_password: str
 
 
@@ -21,3 +22,5 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+    user_id: Optional[int] = None
+    disabled: Optional[bool] = None

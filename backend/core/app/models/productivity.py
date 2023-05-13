@@ -1,8 +1,17 @@
 from typing import Optional, List
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Column, Field, ForeignKey, Integer, Relationship, SQLModel, Table
 from datetime import datetime
 
 metadata = SQLModel.metadata
+
+
+class UserProfileCategoryLink(SQLModel, table=True):
+    user_profile_id: Optional[int] = Field(
+        default=None, foreign_key="userprofile.id", primary_key=True
+    )
+    study_category_id: Optional[int] = Field(
+        default=None, foreign_key="studycategory.id", primary_key=True
+    )
 
 
 class UserProfile(SQLModel, table=True):
@@ -17,7 +26,8 @@ class UserProfile(SQLModel, table=True):
     study_blocks: List["StudyBlock"] = Relationship(back_populates="user_profile")
     daily_goals: List["DailyGoal"] = Relationship(back_populates="user_profile")
     study_categories: List["StudyCategory"] = Relationship(
-        back_populates="user_profile"
+        back_populates="user_profiles",
+        link_model=UserProfileCategoryLink,
     )
 
 
@@ -58,20 +68,10 @@ class StudyCategory(SQLModel, table=True):
 
     # Relationships
     study_blocks: List["StudyBlock"] = Relationship(back_populates="study_category")
-    user_profiles: List[UserProfile] = Relationship(back_populates="study_categories")
-
-
-class UserProfileCategoryLink(SQLModel, table=True):
-    user_profile_id: Optional[int] = Field(
-        default=None, foreign_key="userprofile.id", primary_key=True
+    user_profiles: List[UserProfile] = Relationship(
+        back_populates="study_categories",
+        link_model=UserProfileCategoryLink,
     )
-    study_category_id: Optional[int] = Field(
-        default=None, foreign_key="studycategory.id", primary_key=True
-    )
-
-    # Relationships
-    user_profile: "UserProfile" = Relationship(back_populates="category_links")
-    study_category: "StudyCategory" = Relationship(back_populates="user_profile_links")
 
 
 UserProfile.update_forward_refs()

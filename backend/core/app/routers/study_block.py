@@ -7,11 +7,11 @@ from app import get_session
 router = APIRouter()
 
 
-@router.post("/studyblock", status_code=201)
-async def create_studyblock(
+@router.post("/", status_code=201)
+async def create_study_block(
     study_block: StudyBlockCreate, session: Session = Depends(get_session)
 ):
-    study_block_id = await create_study_block(study_block, session)
+    study_block_id = await create_study_block_func(study_block, session)
 
     if not study_block_id:
         raise HTTPException(status_code=400, detail="StudyBlock creation failed")
@@ -19,9 +19,11 @@ async def create_studyblock(
     return {"study_block_id": study_block_id}
 
 
-@router.get("/studyblock/{study_block_id}")
-async def read_studyblock(study_block_id: int, session: Session = Depends(get_session)):
-    study_block = get_study_block(study_block_id, session)
+@router.get("/{study_block_id}")
+async def read_study_block(
+    study_block_id: int, session: Session = Depends(get_session)
+):
+    study_block = get_study_block_func(study_block_id, session)
 
     if not study_block:
         raise HTTPException(status_code=404, detail="StudyBlock not found")
@@ -29,13 +31,15 @@ async def read_studyblock(study_block_id: int, session: Session = Depends(get_se
     return study_block
 
 
-@router.put("/studyblock/{study_block_id}")
-async def update_studyblock(
+@router.put("/{study_block_id}")
+async def update_study_block(
     study_block_id: int,
     study_block: StudyBlockUpdate,
     session: Session = Depends(get_session),
 ):
-    updated_study_block = await update_study_block(study_block_id, study_block, session)
+    updated_study_block = await update_study_block_func(
+        study_block_id, study_block, session
+    )
 
     if not updated_study_block:
         raise HTTPException(status_code=404, detail="StudyBlock not found")
@@ -43,11 +47,11 @@ async def update_studyblock(
     return updated_study_block
 
 
-@router.delete("/studyblock/{study_block_id}", status_code=204)
-async def delete_studyblock(
+@router.delete("/{study_block_id}", status_code=204)
+async def delete_study_block(
     study_block_id: int, session: Session = Depends(get_session)
 ):
-    deleted_id = await delete_study_block(study_block_id, session)
+    deleted_id = await delete_study_block_func(study_block_id, session)
 
     if not deleted_id:
         raise HTTPException(status_code=404, detail="StudyBlock not found")

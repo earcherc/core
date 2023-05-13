@@ -9,7 +9,7 @@ class UserProfile(BaseModel):
 
 
 class UserProfileCreate(UserProfile):
-    user_id: int
+    user_id: Optional[int] = None
 
 
 class UserProfileUpdate(UserProfile):

@@ -20,7 +20,7 @@ async def create_study_category(
 ):
     try:
         response = await forward_request(
-            "study-category", params=study_category.dict(), service="core"
+            "/", params=study_category.dict(), service="core"
         )
     except HTTPException as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.detail)
@@ -32,9 +32,7 @@ async def read_study_category(
     study_category_id: int, current_user: User = Depends(get_current_active_user)
 ):
     try:
-        response = await forward_request(
-            f"study-category/{study_category_id}", service="core"
-        )
+        response = await forward_request(f"/{study_category_id}", service="core")
     except HTTPException as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.detail)
     return response
@@ -48,7 +46,7 @@ async def update_study_category(
 ):
     try:
         response = await forward_request(
-            f"study-category/{study_category_id}",
+            f"/{study_category_id}",
             params=study_category.dict(),
             service="core",
         )
@@ -62,9 +60,7 @@ async def delete_study_category(
     study_category_id: int, current_user: User = Depends(get_current_active_user)
 ):
     try:
-        response = await forward_request(
-            f"study-category/{study_category_id}", service="core"
-        )
+        response = await forward_request(f"/{study_category_id}", service="core")
     except HTTPException as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.detail)
 

@@ -12,9 +12,7 @@ async def create_study_block(
     study_block: StudyBlockCreate, current_user: User = Depends(get_current_active_user)
 ):
     try:
-        response = await forward_request(
-            "study-block", params=study_block.dict(), service="core"
-        )
+        response = await forward_request("/", params=study_block.dict(), service="core")
     except HTTPException as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.detail)
     return response
@@ -25,9 +23,7 @@ async def read_study_block(
     study_block_id: int, current_user: User = Depends(get_current_active_user)
 ):
     try:
-        response = await forward_request(
-            f"study-block/{study_block_id}", service="core"
-        )
+        response = await forward_request(f"/{study_block_id}", service="core")
     except HTTPException as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.detail)
     return response
@@ -41,7 +37,7 @@ async def update_study_block(
 ):
     try:
         response = await forward_request(
-            f"study-block/{study_block_id}",
+            f"/{study_block_id}",
             params=study_block.dict(),
             service="core",
         )
@@ -55,9 +51,7 @@ async def delete_study_block(
     study_block_id: int, current_user: User = Depends(get_current_active_user)
 ):
     try:
-        response = await forward_request(
-            f"study-block/{study_block_id}", service="core"
-        )
+        response = await forward_request(f"/{study_block_id}", service="core")
     except HTTPException as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.detail)
 

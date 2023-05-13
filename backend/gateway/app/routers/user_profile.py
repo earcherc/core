@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from ..services import forward_request, get_current_active_user
-from ..schemas.core_schemas import UserProfile
+from ..schemas import UserProfile, TokenData, UserProfileCreate
 from ..schemas import User
 
 
@@ -9,11 +9,14 @@ router = APIRouter()
 
 @router.post("/")
 async def create_user_profile(
-    user_profile: UserProfile, current_user: User = Depends(get_current_active_user)
+    user_profile: UserProfileCreate,
+    current_user: TokenData = Depends(get_current_active_user),
 ):
+    if current_user.user_id:
+        user_profile.user_id = current_user.user_id
     try:
         response = await forward_request(
-            "user-profile", params=user_profile.dict(), service="core"
+            "user_profile/", params=user_profile.dict(), service="core"
         )
     except HTTPException as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.detail)
@@ -26,7 +29,7 @@ async def read_user_profile(
 ):
     try:
         response = await forward_request(
-            f"user-profile/{user_profile_id}", service="core"
+            f"user_profile/{user_profile_id}", service="core"
         )
     except HTTPException as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.detail)
@@ -41,7 +44,7 @@ async def update_user_profile(
 ):
     try:
         response = await forward_request(
-            f"user-profile/{user_profile_id}",
+            f"user_profile/{user_profile_id}",
             params=user_profile.dict(),
             service="core",
         )
@@ -56,7 +59,7 @@ async def delete_user_profile(
 ):
     try:
         response = await forward_request(
-            f"user-profile/{user_profile_id}", service="core"
+            f"user_profile/{user_profile_id}", service="core"
         )
     except HTTPException as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.detail)
