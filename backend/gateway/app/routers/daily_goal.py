@@ -3,7 +3,6 @@ from ..services import forward_request, get_current_active_user
 from ..schemas.core_schemas import DailyGoal, DailyGoalCreate, DailyGoalUpdate
 from ..schemas import User
 
-
 router = APIRouter()
 
 
@@ -11,7 +10,9 @@ router = APIRouter()
 async def create_daily_goal(
     daily_goal: DailyGoalCreate, current_user: User = Depends(get_current_active_user)
 ):
-    response = await forward_request("/", params=daily_goal.dict(), service="core")
+    response = await forward_request(
+        method="post", path="daily_goal/", params=daily_goal.dict(), service="core"
+    )
     return response
 
 
@@ -19,7 +20,9 @@ async def create_daily_goal(
 async def read_daily_goal(
     daily_goal_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    response = await forward_request(f"/{daily_goal_id}", service="core")
+    response = await forward_request(
+        method="get", path=f"daily_goal/{daily_goal_id}", service="core"
+    )
     return response
 
 
@@ -30,16 +33,19 @@ async def update_daily_goal(
     current_user: User = Depends(get_current_active_user),
 ):
     response = await forward_request(
-        f"/{daily_goal_id}",
+        method="put",
+        path=f"daily_goal/{daily_goal_id}",
         params=daily_goal.dict(),
         service="core",
     )
     return response
 
 
-@router.delete("/{daily_id}")
+@router.delete("/{daily_goal_id}")
 async def delete_daily_goal(
     daily_goal_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    response = await forward_request(f"/{daily_goal_id}", service="core")
+    response = await forward_request(
+        method="delete", path=f"daily_goal/{daily_goal_id}", service="core"
+    )
     return response

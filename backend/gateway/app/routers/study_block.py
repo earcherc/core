@@ -3,7 +3,6 @@ from ..services import forward_request, get_current_active_user
 from ..schemas.core_schemas import StudyBlock, StudyBlockCreate, StudyBlockUpdate
 from ..schemas import User
 
-
 router = APIRouter()
 
 
@@ -11,7 +10,9 @@ router = APIRouter()
 async def create_study_block(
     study_block: StudyBlockCreate, current_user: User = Depends(get_current_active_user)
 ):
-    response = await forward_request("/", params=study_block.dict(), service="core")
+    response = await forward_request(
+        method="post", path="study_block/", params=study_block.dict(), service="core"
+    )
     return response
 
 
@@ -19,7 +20,9 @@ async def create_study_block(
 async def read_study_block(
     study_block_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    response = await forward_request(f"/{study_block_id}", service="core")
+    response = await forward_request(
+        method="get", path=f"study_block/{study_block_id}", service="core"
+    )
     return response
 
 
@@ -30,7 +33,8 @@ async def update_study_block(
     current_user: User = Depends(get_current_active_user),
 ):
     response = await forward_request(
-        f"/{study_block_id}",
+        method="put",
+        path=f"study_block/{study_block_id}",
         params=study_block.dict(),
         service="core",
     )
@@ -41,5 +45,7 @@ async def update_study_block(
 async def delete_study_block(
     study_block_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    response = await forward_request(f"/{study_block_id}", service="core")
+    response = await forward_request(
+        method="delete", path=f"study_block/{study_block_id}", service="core"
+    )
     return response

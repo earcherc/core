@@ -13,9 +13,7 @@ async def get_user_profile_func(
     )
     user_profile = session.exec(user_profile_statement).first()
     if not user_profile:
-        raise HTTPException(
-            status_code=400, detail="User profile with this user_id already exists"
-        )
+        raise HTTPException(status_code=404, detail="User profile not found")
 
     return UserProfileInDB(**user_profile.__dict__)
 
@@ -44,15 +42,15 @@ async def create_user_profile_func(
 
 
 async def update_user_profile_func(
-    user_profile_id: int, user_profile_data: UserProfile, session: Session
+    user_id: int, user_profile_data: UserProfile, session: Session
 ):
     user_profile_statement = select(UserProfileTable).where(
-        UserProfileTable.id == user_profile_id
+        UserProfileTable.user_id == user_id
     )
     user_profile = session.exec(user_profile_statement).first()
 
     if not user_profile:
-        raise HTTPException(status_code=400, detail="User profile not found")
+        raise HTTPException(status_code=404, detail="User profile not found")
 
     for var, value in vars(user_profile_data).items():
         setattr(user_profile, var, value if value else getattr(user_profile, var))
@@ -63,14 +61,14 @@ async def update_user_profile_func(
     return UserProfileInDB(**user_profile.__dict__)
 
 
-async def delete_user_profile_func(user_profile_id: int, session: Session):
+async def delete_user_profile_func(user_id: int, session: Session):
     user_profile_statement = select(UserProfileTable).where(
-        UserProfileTable.id == user_profile_id
+        UserProfileTable.user_id == user_id
     )
     user_profile = session.exec(user_profile_statement).first()
     if not user_profile:
-        raise HTTPException(status_code=400, detail="User profile not found")
+        raise HTTPException(status_code=404, detail="User profile not found")
 
     session.delete(user_profile)
     session.commit()
-    return user_profile_id
+    return user_id

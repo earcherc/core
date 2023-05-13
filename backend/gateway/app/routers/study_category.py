@@ -1,5 +1,3 @@
-# routers/study_category.py
-
 from fastapi import APIRouter, HTTPException, Depends
 from ..services import forward_request, get_current_active_user
 from ..schemas.core_schemas import (
@@ -9,7 +7,6 @@ from ..schemas.core_schemas import (
 )
 from ..schemas import User
 
-
 router = APIRouter()
 
 
@@ -18,7 +15,12 @@ async def create_study_category(
     study_category: StudyCategoryCreate,
     current_user: User = Depends(get_current_active_user),
 ):
-    response = await forward_request("/", params=study_category.dict(), service="core")
+    response = await forward_request(
+        method="post",
+        path="study_category/",
+        params=study_category.dict(),
+        service="core",
+    )
     return response
 
 
@@ -26,7 +28,9 @@ async def create_study_category(
 async def read_study_category(
     study_category_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    response = await forward_request(f"/{study_category_id}", service="core")
+    response = await forward_request(
+        method="get", path=f"study_category/{study_category_id}", service="core"
+    )
     return response
 
 
@@ -37,7 +41,8 @@ async def update_study_category(
     current_user: User = Depends(get_current_active_user),
 ):
     response = await forward_request(
-        f"/{study_category_id}",
+        method="put",
+        path=f"study_category/{study_category_id}",
         params=study_category.dict(),
         service="core",
     )
@@ -48,5 +53,7 @@ async def update_study_category(
 async def delete_study_category(
     study_category_id: int, current_user: User = Depends(get_current_active_user)
 ):
-    response = await forward_request(f"/{study_category_id}", service="core")
+    response = await forward_request(
+        method="delete", path=f"study_category/{study_category_id}", service="core"
+    )
     return response

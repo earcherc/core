@@ -9,7 +9,7 @@ router = APIRouter()
 @router.post("/register")
 async def register(user: User):
     response = await forward_request(
-        "auth/register", params=user.dict(), service="auth"
+        method="post", path="auth/register", params=user.dict(), service="auth"
     )
     return response
 
@@ -17,6 +17,10 @@ async def register(user: User):
 @router.post("/login")
 async def login(data: OAuth2PasswordRequestForm = Depends()):
     response = await forward_request(
-        "auth/login", params=data.__dict__, service="auth", is_form_data=True
+        method="post",
+        path="auth/login",
+        params=data.__dict__,
+        service="auth",
+        is_form_data=True,
     )
     return response

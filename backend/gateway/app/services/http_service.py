@@ -10,6 +10,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 async def forward_request(
+    method: str,
     path: str,
     params: dict = {},
     headers: dict = {},
@@ -26,10 +27,19 @@ async def forward_request(
     response = None
     async with httpx.AsyncClient() as client:
         try:
-            if is_form_data:
-                response = await client.post(url, data=params, headers=headers)
+            if method.lower() == "post":
+                if is_form_data:
+                    response = await client.post(url, data=params, headers=headers)
+                else:
+                    response = await client.post(url, json=params, headers=headers)
+            elif method.lower() == "get":
+                response = await client.get(url, params=params, headers=headers)
+            elif method.lower() == "put":
+                response = await client.put(url, json=params, headers=headers)
+            elif method.lower() == "delete":
+                response = await client.delete(url, headers=headers)
             else:
-                response = await client.post(url, json=params, headers=headers)
+                raise ValueError(f"Unknown HTTP method: {method}")
             response.raise_for_status()
         except httpx.HTTPStatusError as http_err:
             if response:

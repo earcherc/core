@@ -21,21 +21,19 @@ async def get_user_profile(user_id: int, session: Session = Depends(get_session)
     return db_user_profile
 
 
-@router.put("/{user_profile_id}", status_code=200)
+@router.put("/{user_id}", status_code=200)
 async def update_user_profile(
-    user_profile_id: int,
+    user_id: int,
     user_profile: UserProfile,
     session: Session = Depends(get_session),
 ):
     updated_user_profile_id = await update_user_profile_func(
-        user_profile_id, user_profile, session
+        user_id, user_profile, session
     )
     return {"user_profile_id": updated_user_profile_id}
 
 
-@router.delete("/{user_profile_id}", status_code=200)
-async def delete_user_profile(
-    user_profile_id: int, session: Session = Depends(get_session)
-):
-    deleted_user_profile_id = await delete_user_profile_func(user_profile_id, session)
+@router.delete("/{user_id}", status_code=200)
+async def delete_user_profile(user_id: int, session: Session = Depends(get_session)):
+    deleted_user_profile_id = await delete_user_profile_func(user_id, session)
     return {"user_profile_id": deleted_user_profile_id}
