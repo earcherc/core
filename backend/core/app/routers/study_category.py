@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends
 from sqlmodel import Session
 from ..schemas import StudyCategory, StudyCategoryInDB
 from ..services import (
@@ -35,8 +35,6 @@ async def update_study_category(
     updated_study_category = await update_study_category_func(
         study_category_id, study_category, session
     )
-    if not updated_study_category:
-        raise HTTPException(status_code=404, detail="Study category not found")
     return updated_study_category
 
 
@@ -47,8 +45,6 @@ async def delete_study_category(
     deleted_study_category_id = await delete_study_category_func(
         study_category_id, session
     )
-    if not deleted_study_category_id:
-        raise HTTPException(status_code=404, detail="Study category not found")
     return {
         "message": f"Successfully deleted study category with id: {deleted_study_category_id}"
     }

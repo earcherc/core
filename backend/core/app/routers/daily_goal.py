@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends
 from sqlmodel import Session
 from ..schemas import DailyGoal, DailyGoalInDB
 from ..services.daily_goal_service import (
@@ -24,8 +24,6 @@ async def create_daily_goal(
 @router.get("/{daily_goal_id}", response_model=DailyGoalInDB)
 async def get_daily_goal(daily_goal_id: int, session: Session = Depends(get_session)):
     db_daily_goal = await get_daily_goal_func(daily_goal_id, session)
-    if not db_daily_goal:
-        raise HTTPException(status_code=404, detail="DailyGoal not found")
     return db_daily_goal
 
 
@@ -39,8 +37,6 @@ async def update_daily_goal(
     daily_goal_id: int, daily_goal: DailyGoal, session: Session = Depends(get_session)
 ):
     db_daily_goal = await update_daily_goal_func(daily_goal_id, daily_goal, session)
-    if not db_daily_goal:
-        raise HTTPException(status_code=404, detail="DailyGoal not found")
     return db_daily_goal
 
 
@@ -49,6 +45,4 @@ async def delete_daily_goal(
     daily_goal_id: int, session: Session = Depends(get_session)
 ):
     deleted_daily_goal_id = await delete_daily_goal_func(daily_goal_id, session)
-    if not deleted_daily_goal_id:
-        raise HTTPException(status_code=404, detail="DailyGoal not found")
     return {"detail": "Successfully deleted the DailyGoal"}

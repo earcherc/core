@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends
 from sqlmodel import Session
 from ..schemas import UserProfile, UserProfileInDB, UserProfileCreate
 from ..services import *
