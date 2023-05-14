@@ -1,9 +1,8 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends
 
 from ..services import forward_request, get_current_active_user
 from ..schemas.auth_schemas import TokenData
 from ..schemas.core_schemas import (
-    StudyCategory,
     StudyCategoryCreate,
     StudyCategoryUpdate,
 )

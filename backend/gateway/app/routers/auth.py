@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends
 from ..services import forward_request
 from ..schemas import User
 from fastapi.security import OAuth2PasswordRequestForm

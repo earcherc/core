@@ -55,7 +55,7 @@ class DailyGoal(BaseModel):
 
 
 class DailyGoalCreate(DailyGoal):
-    user_id: int  # changed from user_profile_id to user_id
+    user_id: Optional[int] = None
 
 
 class DailyGoalUpdate(DailyGoal):

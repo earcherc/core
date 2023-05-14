@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends
 from ..services import forward_request, get_current_active_user
-from ..schemas.core_schemas import DailyGoal, DailyGoalCreate, DailyGoalUpdate
+from ..schemas.core_schemas import DailyGoalCreate, DailyGoalUpdate
 from ..schemas import TokenData
 
 router = APIRouter()
@@ -12,17 +12,30 @@ async def create_daily_goal(
     current_user: TokenData = Depends(get_current_active_user),
 ):
     response = await forward_request(
-        method="post", path="daily_goal/", params=daily_goal.dict(), service="core"
+        method="post",
+        path=f"daily_goal/{current_user.user_id}",
+        params=daily_goal.dict(),
+        service="core",
     )
     return response
 
 
 @router.get("/{daily_goal_id}")
-async def read_daily_goal(
+async def get_daily_goal(
     daily_goal_id: int, current_user: TokenData = Depends(get_current_active_user)
 ):
     response = await forward_request(
         method="get", path=f"daily_goal/{daily_goal_id}", service="core"
+    )
+    return response
+
+
+@router.get("/")
+async def get_user_daily_goals(
+    current_user: TokenData = Depends(get_current_active_user),
+):
+    response = await forward_request(
+        method="get", path=f"daily_goal/user/{current_user.user_id}", service="core"
     )
     return response
 
