@@ -37,8 +37,13 @@ class StudyBlockCreate(StudyBlock):
     study_category_id: int
 
 
-class StudyBlockUpdate(StudyBlock):
-    pass
+class StudyBlockUpdate(BaseModel):
+    start: Optional[datetime] = None
+    end: Optional[datetime] = None
+    title: Optional[str] = None
+    rating: Optional[float] = None
+    daily_goal_id: Optional[int] = None
+    study_category_id: Optional[int] = None
 
 
 class StudyBlockInDB(StudyBlock):

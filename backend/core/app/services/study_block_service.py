@@ -38,8 +38,10 @@ async def update_study_block_func(
     if not study_block:
         raise HTTPException(status_code=404, detail="Study block not found")
 
-    for key, value in study_block_data.dict().items():
-        setattr(study_block, key, value)
+    for var, value in vars(study_block_data).items():
+        setattr(
+            study_block, var, value if value is not None else getattr(study_block, var)
+        )
 
     session.add(study_block)
     session.commit()

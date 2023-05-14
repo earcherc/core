@@ -44,4 +44,4 @@ async def delete_study_block(
     study_block_id: int, session: Session = Depends(get_session)
 ):
     deleted_id = await delete_study_block_func(study_block_id, session)
-    return {"detail": f"StudyBlock {deleted_id} deleted successfully"}
+    return {"study_block_id": deleted_id}
