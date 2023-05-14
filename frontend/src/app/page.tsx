@@ -1,3 +1,9 @@
-export default async function Home() {
-	return <div className=" mx-auto mt-6 mb-6 max-w-lg px-3">Hello World</div>;
+export default function Home() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <div>
+        Hello world
+      </div> 
+    </main>
+  )
 }
