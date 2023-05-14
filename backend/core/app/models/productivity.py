@@ -34,7 +34,7 @@ class StudyBlock(SQLModel, table=True):
     start: datetime
     end: datetime
     title: str
-    rating: float = Field(gt=0, lt=5)  # ratings should be between 0 and 5
+    rating: float = Field(ge=0, le=5)  # ratings should be between 0 and 5
 
     # Foreign keys
     user_id: int = Field(foreign_key="userprofile.id", index=True)

@@ -10,11 +10,10 @@ from app import get_session
 router = APIRouter()
 
 
-@router.post("/{user_id}", response_model=StudyBlockInDB, status_code=201)
+@router.post("/", response_model=StudyBlockInDB, status_code=201)
 async def create_study_block(
-    user_id: int, study_block: StudyBlockCreate, session: Session = Depends(get_session)
+    study_block: StudyBlockCreate, session: Session = Depends(get_session)
 ):
-    study_block.user_id = user_id
     new_study_block = await create_study_block_func(study_block, session)
     return new_study_block
 
