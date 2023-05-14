@@ -57,6 +57,7 @@ async def update_user_profile_func(
 
     session.add(user_profile)
     session.commit()
+    session.refresh(user_profile)
 
     return UserProfileInDB(**user_profile.__dict__)
 

@@ -5,6 +5,14 @@ from ..schemas import UserProfile, TokenData, UserProfileCreate
 router = APIRouter()
 
 
+@router.get("/")
+async def read_user_profile(current_user: TokenData = Depends(get_current_active_user)):
+    response = await forward_request(
+        method="get", path=f"user_profile/{current_user.user_id}", service="core"
+    )
+    return response
+
+
 @router.post("/")
 async def create_user_profile(
     user_profile: UserProfileCreate,
@@ -14,14 +22,6 @@ async def create_user_profile(
 
     response = await forward_request(
         method="post", path="user_profile/", params=user_profile.dict(), service="core"
-    )
-    return response
-
-
-@router.get("/")
-async def read_user_profile(current_user: TokenData = Depends(get_current_active_user)):
-    response = await forward_request(
-        method="get", path=f"user_profile/{current_user.user_id}", service="core"
     )
     return response
 
