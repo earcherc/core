@@ -1,5 +1,8 @@
+from typing import List
 from fastapi import APIRouter, Depends
 from sqlmodel import Session
+
+from app.schemas.schemas import StudyBlockInDB
 from ..schemas import StudyBlockCreate, StudyBlockUpdate
 from ..services import *
 from app import get_session
@@ -7,20 +10,22 @@ from app import get_session
 router = APIRouter()
 
 
-@router.post("/", status_code=201)
+@router.post("/{user_id}", response_model=StudyBlockInDB, status_code=201)
 async def create_study_block(
-    study_block: StudyBlockCreate, session: Session = Depends(get_session)
+    user_id: int, study_block: StudyBlockCreate, session: Session = Depends(get_session)
 ):
-    study_block_id = await create_study_block_func(study_block, session)
-    return {"study_block_id": study_block_id}
+    study_block.user_id = user_id
+    new_study_block = await create_study_block_func(study_block, session)
+    return new_study_block
 
 
-@router.get("/{study_block_id}")
-async def read_study_block(
-    study_block_id: int, session: Session = Depends(get_session)
+@router.get("/{user_id}", response_model=List[StudyBlockInDB])
+async def get_user_study_blocks(
+    user_id: int,
+    session: Session = Depends(get_session),
 ):
-    study_block = get_study_block_func(study_block_id, session)
-    return study_block
+    study_blocks = await get_user_study_blocks_func(user_id, session)
+    return study_blocks
 
 
 @router.put("/{study_block_id}")
@@ -40,4 +45,4 @@ async def delete_study_block(
     study_block_id: int, session: Session = Depends(get_session)
 ):
     deleted_id = await delete_study_block_func(study_block_id, session)
-    return {"detail": "StudyBlock deleted successfully"}
+    return {"detail": f"StudyBlock {deleted_id} deleted successfully"}

@@ -21,7 +21,7 @@ async def get_user_profile(user_id: int, session: Session = Depends(get_session)
     return db_user_profile
 
 
-@router.put("/{user_id}", status_code=200)
+@router.put("/{user_id}", response_model=UserProfileInDB, status_code=200)
 async def update_user_profile(
     user_id: int,
     user_profile: UserProfile,
@@ -30,7 +30,7 @@ async def update_user_profile(
     updated_user_profile_id = await update_user_profile_func(
         user_id, user_profile, session
     )
-    return {"user_profile_id": updated_user_profile_id}
+    return updated_user_profile_id
 
 
 @router.delete("/{user_id}", status_code=200)

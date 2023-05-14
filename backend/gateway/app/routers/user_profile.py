@@ -21,7 +21,10 @@ async def create_user_profile(
     user_profile.user_id = current_user.user_id
 
     response = await forward_request(
-        method="post", path="user_profile/", params=user_profile.dict(), service="core"
+        method="post",
+        path="user_profile/",
+        params=user_profile.dict(),
+        service="core",
     )
     return response
 

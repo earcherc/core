@@ -32,7 +32,7 @@ class StudyBlock(BaseModel):
 
 
 class StudyBlockCreate(StudyBlock):
-    user_profile_id: int
+    user_id: int
     daily_goal_id: int
     study_category_id: int
 
@@ -43,6 +43,7 @@ class StudyBlockUpdate(StudyBlock):
 
 class StudyBlockInDB(StudyBlock):
     id: int
+    user_id: int  # added user_id
 
     class Config:
         orm_mode = True
@@ -54,7 +55,7 @@ class DailyGoal(BaseModel):
 
 
 class DailyGoalCreate(DailyGoal):
-    user_profile_id: int
+    user_id: int
 
 
 class DailyGoalUpdate(DailyGoal):
@@ -63,6 +64,7 @@ class DailyGoalUpdate(DailyGoal):
 
 class DailyGoalInDB(DailyGoal):
     id: int
+    user_id: int  # added user_id
 
     class Config:
         orm_mode = True
@@ -92,7 +94,7 @@ class UserProfileCategoryLink(BaseModel):
 
 
 class UserProfileCategoryLinkCreate(UserProfileCategoryLink):
-    user_profile_id: int
+    user_id: int
     study_category_id: int
 
 
@@ -101,7 +103,7 @@ class UserProfileCategoryLinkUpdate(UserProfileCategoryLink):
 
 
 class UserProfileCategoryLinkInDB(UserProfileCategoryLink):
-    user_profile_id: int
+    user_id: int
     study_category_id: int
 
     class Config:

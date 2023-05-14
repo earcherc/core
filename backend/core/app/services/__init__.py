@@ -1,5 +1,5 @@
 from .study_block_service import (
-    get_study_block_func,
+    get_user_study_blocks_func,
     create_study_block_func,
     update_study_block_func,
     delete_study_block_func,

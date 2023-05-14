@@ -1,12 +1,10 @@
 from typing import Optional, List
-from sqlmodel import Column, Field, ForeignKey, Integer, Relationship, SQLModel, Table
+from sqlmodel import Field, Relationship, SQLModel, Index
 from datetime import datetime
-
-metadata = SQLModel.metadata
 
 
 class UserProfileCategoryLink(SQLModel, table=True):
-    user_profile_id: Optional[int] = Field(
+    user_id: Optional[int] = Field(
         default=None, foreign_key="userprofile.id", primary_key=True
     )
     study_category_id: Optional[int] = Field(
@@ -16,7 +14,7 @@ class UserProfileCategoryLink(SQLModel, table=True):
 
 class UserProfile(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    user_id: int = Field(default=None, unique=True)  # user_id from the auth service
+    user_id: int = Field(default=None, unique=True, index=True)
 
     # Additional user profile fields
     favorite_color: Optional[str] = Field(default=None)
@@ -39,9 +37,9 @@ class StudyBlock(SQLModel, table=True):
     rating: float = Field(gt=0, lt=5)  # ratings should be between 0 and 5
 
     # Foreign keys
-    user_profile_id: int = Field(foreign_key="userprofile.id")
-    daily_goal_id: int = Field(foreign_key="dailygoal.id")
-    study_category_id: int = Field(foreign_key="studycategory.id")
+    user_id: int = Field(foreign_key="userprofile.id", index=True)
+    daily_goal_id: int = Field(foreign_key="dailygoal.id", index=True)
+    study_category_id: int = Field(foreign_key="studycategory.id", index=True)
 
     # Relationships
     user_profile: UserProfile = Relationship(back_populates="study_blocks")
@@ -55,7 +53,7 @@ class DailyGoal(SQLModel, table=True):
     block_size: int
 
     # Foreign keys
-    user_profile_id: int = Field(foreign_key="userprofile.id", index=True)
+    user_id: int = Field(foreign_key="userprofile.id", index=True)
 
     # Relationships
     user_profile: UserProfile = Relationship(back_populates="daily_goals")
@@ -64,7 +62,7 @@ class DailyGoal(SQLModel, table=True):
 
 class StudyCategory(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    title: str
+    title: str = Field(index=True)
 
     # Relationships
     study_blocks: List["StudyBlock"] = Relationship(back_populates="study_category")

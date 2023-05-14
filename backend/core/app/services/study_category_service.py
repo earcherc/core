@@ -62,7 +62,7 @@ async def delete_study_category_func(study_category_id: int, session: Session):
     study_category = session.exec(study_category_statement).first()
 
     if not study_category:
-        return None
+        raise HTTPException(status_code=404, detail="Study category not found")
 
     session.delete(study_category)
     session.commit()
