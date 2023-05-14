@@ -12,6 +12,17 @@ async def get_all_study_categories_func(session: Session) -> List[StudyCategoryI
     return [StudyCategoryInDB(**stc.__dict__) for stc in study_categories]
 
 
+async def get_study_category_func(
+    study_category_id: int, session: Session
+) -> StudyCategoryInDB:
+    study_category_statement = select(StudyCategoryTable).where(
+        StudyCategoryTable.id == study_category_id
+    )
+    study_category = session.exec(study_category_statement).first()
+
+    return StudyCategoryInDB(**study_category.__dict__)
+
+
 async def create_study_category_func(
     study_category_data: StudyCategory, session: Session
 ) -> StudyCategoryInDB:

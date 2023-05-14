@@ -1,11 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends
+
 from ..services import forward_request, get_current_active_user
+from ..schemas.auth_schemas import TokenData
 from ..schemas.core_schemas import (
     StudyCategory,
     StudyCategoryCreate,
     StudyCategoryUpdate,
 )
-from ..schemas import User
 
 router = APIRouter()
 
@@ -13,7 +14,7 @@ router = APIRouter()
 @router.post("/")
 async def create_study_category(
     study_category: StudyCategoryCreate,
-    current_user: User = Depends(get_current_active_user),
+    current_user: TokenData = Depends(get_current_active_user),
 ):
     response = await forward_request(
         method="post",
@@ -26,10 +27,20 @@ async def create_study_category(
 
 @router.get("/{study_category_id}")
 async def read_study_category(
-    study_category_id: int, current_user: User = Depends(get_current_active_user)
+    study_category_id: int, current_user: TokenData = Depends(get_current_active_user)
 ):
     response = await forward_request(
         method="get", path=f"study_category/{study_category_id}", service="core"
+    )
+    return response
+
+
+@router.get("/")
+async def read_study_categories(
+    current_user: TokenData = Depends(get_current_active_user),
+):
+    response = await forward_request(
+        method="get", path=f"study_category/", service="core"
     )
     return response
 
@@ -38,7 +49,7 @@ async def read_study_category(
 async def update_study_category(
     study_category_id: int,
     study_category: StudyCategoryUpdate,
-    current_user: User = Depends(get_current_active_user),
+    current_user: TokenData = Depends(get_current_active_user),
 ):
     response = await forward_request(
         method="put",
@@ -51,7 +62,7 @@ async def update_study_category(
 
 @router.delete("/{study_category_id}")
 async def delete_study_category(
-    study_category_id: int, current_user: User = Depends(get_current_active_user)
+    study_category_id: int, current_user: TokenData = Depends(get_current_active_user)
 ):
     response = await forward_request(
         method="delete", path=f"study_category/{study_category_id}", service="core"

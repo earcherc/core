@@ -24,4 +24,5 @@ from .study_category_service import (
     create_study_category_func,
     update_study_category_func,
     delete_study_category_func,
+    get_study_category_func,
 )
