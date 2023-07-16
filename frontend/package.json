@@ -10,6 +10,8 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.15",
+    "@heroicons/react": "^2.0.18",
     "@types/node": "20.1.4",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
@@ -20,7 +22,7 @@
     "eslint-config-next": "13.4.2",
     "jose": "^4.14.4",
     "nanoid": "^4.0.2",
-    "next": "13.4.2",
+    "next": "^13.4.10",
     "postcss": "8.4.23",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
