@@ -22,7 +22,7 @@
     "eslint-config-next": "13.4.2",
     "jose": "^4.14.4",
     "nanoid": "^4.0.2",
-    "next": "^13.4.10",
+    "next": "^13.4.11",
     "postcss": "8.4.23",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",

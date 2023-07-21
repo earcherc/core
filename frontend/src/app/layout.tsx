@@ -1,4 +1,3 @@
-import Nav from '@app/components/nav';
 import '@styles/globals.css';
 
 import { Inter } from 'next/font/google';
@@ -14,7 +13,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="description" content="My Interactive Journal" key="desc" />
       </head>
       <body className={inter.className}>
-        <Nav></Nav>
         <div className="flex min-h-screen flex-col">
           <main className="flex-grow">{children}</main>
         </div>
