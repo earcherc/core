@@ -6,6 +6,7 @@ class Config:
     ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
     SECRET_KEY = os.getenv("SECRET_KEY")
     ALGORITHM = os.getenv("ALGORITHM")
+    API_KEY = os.getenv("API_KEY")
 
     # URLs for the services this gateway communicates with
     SERVICE_URLS = {

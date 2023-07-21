@@ -1,7 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from app.middleware import check_permission
 from app.routers import auth, user_profile, study_block, daily_goal, study_category
 
-app = FastAPI()
+app = FastAPI(dependencies=[Depends(check_permission)])
+
 
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(user_profile.router, prefix="/user_profile", tags=["User Profile"])
