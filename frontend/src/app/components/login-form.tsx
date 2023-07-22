@@ -2,10 +2,13 @@
 import { useRouter } from 'next/navigation';
 import React, { FormEvent, useState } from 'react';
 import useToast from './toasts/toast-context';
+import classNames from 'classnames';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const { addToast } = useToast();
 
   const router = useRouter();
@@ -22,8 +25,12 @@ const LoginForm = () => {
     });
 
     const { body, status } = await res.json();
-    if (status == 200) router.push('/dashboard');
-    else alert(body.detail);
+    if (status == 200) {
+      router.push('/dashboard');
+    } else {
+      setErrorMessage(body.detail);
+      addToast({ type: 'error', content: body.detail });
+    }
   };
 
   return (
@@ -33,9 +40,6 @@ const LoginForm = () => {
           Sign in to your account
         </h2>
       </div>
-      <button onClick={() => addToast({ type: 'success', content: 'Hello world', autoCloseDelay: undefined })}>
-        Trigger Toast
-      </button>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" onSubmit={handleSubmit}>
@@ -51,7 +55,10 @@ const LoginForm = () => {
                 autoComplete="username"
                 placeholder="johndoe"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onInput={(e) => {
+                  setUsername(e.currentTarget.value);
+                  setErrorMessage(null);
+                }}
                 required
                 className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -71,7 +78,10 @@ const LoginForm = () => {
                 type="password"
                 autoComplete="current-password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onInput={(e) => {
+                  setPassword(e.currentTarget.value);
+                  setErrorMessage(null);
+                }}
                 required
                 className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -80,13 +90,21 @@ const LoginForm = () => {
 
           <div>
             <button
+              disabled={!username || !password}
               type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className={classNames(
+                'flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
+                {
+                  'cursor-not-allowed bg-indigo-300': !username || !password,
+                  'bg-indigo-600 hover:bg-indigo-500': username && password,
+                },
+              )}
             >
               Sign in
             </button>
           </div>
         </form>
+        {errorMessage && <div className="mt-2 text-red-500">{errorMessage}</div>}
       </div>
     </div>
   );
