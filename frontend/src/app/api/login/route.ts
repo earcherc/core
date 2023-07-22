@@ -17,19 +17,20 @@ export async function POST(request: Request) {
   });
 
   if (!res.ok) {
-    return NextResponse.json({ success: false });
+    const body = await res.json();
+    return NextResponse.json({ body, status: 500 });
   }
 
-  const { access_token } = await res.json();
+  const body = await res.json();
 
   const cookie = {
     name: 'jwt',
-    value: access_token,
+    value: body.access_token,
     maxAge: 60 * 60,
     httpOnly: true,
   };
 
-  const response = NextResponse.json({ success: true });
+  const response = NextResponse.json({ body, status: 200 });
   response.cookies.set(cookie);
 
   return response;
