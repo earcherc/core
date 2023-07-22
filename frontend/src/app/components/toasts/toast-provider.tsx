@@ -26,7 +26,11 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
   }, []);
 
   const addToast = useCallback(
-    ({ type, content, autoCloseDelay = 5000 }: Pick<Toast, 'type' | 'content' | 'autoCloseDelay'>) => {
+    ({
+      type,
+      content,
+      autoCloseDelay = 5000,
+    }: Pick<Toast, 'type' | 'content'> & Partial<Pick<Toast, 'autoCloseDelay'>>) => {
       const id = uuid();
 
       const toast: Toast = {
