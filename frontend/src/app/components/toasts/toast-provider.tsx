@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useEffect, useState } from 'react';
+import { createContext, useCallback, useState } from 'react';
 import Toast from './toast';
 
 export const ToastContext = createContext<IToastContext | undefined>(undefined);
@@ -8,27 +8,28 @@ export const ToastContext = createContext<IToastContext | undefined>(undefined);
 export default function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  useEffect(() => {
-    if (toasts.length > 0) {
-      const timer = setTimeout(() => setToasts((toasts) => toasts.slice(1)), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [toasts]);
-
   const addToast = useCallback(
     (toast: Toast) => {
-      console.log(toast);
       setToasts((toasts) => [...toasts, toast]);
     },
     [setToasts],
   );
 
+  const removeToast = useCallback(
+    (index: number) => {
+      setToasts((toasts) => toasts.filter((_, i) => i !== index));
+    },
+    [setToasts],
+  );
+
   return (
-    <ToastContext.Provider value={{ addToast }}>
+    <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
-      {toasts.map((toast: Toast, i: number) => (
-        <Toast key={i} toast={toast} />
-      ))}
+      <div className="fixed left-0 right-0 top-0 z-50 flex flex-col items-center space-y-1">
+        {toasts.map((toast: Toast, i: number) => (
+          <Toast key={i} toast={toast} index={i} />
+        ))}
+      </div>
     </ToastContext.Provider>
   );
 }
