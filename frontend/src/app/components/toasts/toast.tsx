@@ -1,45 +1,20 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { CheckCircleIcon, XCircleIcon, ExclamationTriangleIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import useToast from './toast-context';
+import ProgressBar from './progress-bar';
 
-const Toast = ({ toast, index }: { toast: Toast; index: number }) => {
-  const [isPaused, setIsPaused] = useState(false);
-  const { removeToast } = useToast();
-  const endTime = useRef<number>(0);
-  const timerId = useRef<NodeJS.Timeout | null>(null);
+const Toast = ({ toast }: { toast: Toast }) => {
+  const { removeToast, pauseToast, resumeToast } = useToast();
 
-  useEffect(() => {
-    endTime.current = Date.now() + 5000;
-    timerId.current = setTimeout(() => removeToast(index), 5000);
-
-    return () => {
-      if (timerId.current) {
-        clearTimeout(timerId.current);
-      }
-    };
-  }, [removeToast, index]);
-
-  const pauseToast = () => {
-    if (timerId.current) {
-      clearTimeout(timerId.current);
-      timerId.current = null;
-    }
-
-    // calculate the remaining time and store it
-    const remainingTime = endTime.current - Date.now();
-    endTime.current = Date.now() + remainingTime;
-    setIsPaused(true);
+  const handleMouseEnter = () => {
+    pauseToast(toast.id);
   };
 
-  const resumeToast = () => {
-    if (!isPaused) return;
-
-    const remainingTime = endTime.current - Date.now();
-    timerId.current = setTimeout(() => removeToast(index), remainingTime);
-    setIsPaused(false);
+  const handleMouseLeave = () => {
+    resumeToast(toast.id);
   };
 
   const toastTypeClasses: Record<string, ToastType> = {
@@ -73,19 +48,19 @@ const Toast = ({ toast, index }: { toast: Toast; index: number }) => {
 
   return (
     <div
-      onMouseEnter={pauseToast}
-      onMouseLeave={resumeToast}
-      className={classNames('relative w-1/2 rounded-md p-4', bgColor)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={classNames('relative mt-1 w-1/2 rounded-md p-4', bgColor)}
     >
       <div className="flex">
         <div className="flex-shrink-0">{icon}</div>
         <div className="ml-3">
-          <p className={classNames('text-sm font-medium', textColor)}>{toast.message}</p>
+          <p className={classNames('text-sm font-medium', textColor)}>{toast.content}</p>
         </div>
         <div className="ml-auto pl-3">
           <div className="-mx-1.5 -my-1.5">
             <button
-              onClick={() => removeToast(index)}
+              onClick={() => removeToast(toast.id)}
               type="button"
               className={classNames(
                 'inline-flex rounded-md p-1.5',
@@ -99,10 +74,11 @@ const Toast = ({ toast, index }: { toast: Toast; index: number }) => {
           </div>
         </div>
       </div>
-      <div
-        className={classNames(progressColor, 'animate-countdown absolute bottom-0 left-0 h-1 w-full rounded-b-md ', {
-          paused: isPaused,
-        })}
+      <ProgressBar
+        key={toast.id}
+        isPaused={toast.isPaused}
+        progressColor={progressColor}
+        autoCloseDelay={toast.autoCloseDelay}
       />
     </div>
   );

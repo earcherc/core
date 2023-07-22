@@ -2,22 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes countdown {
+  0% { width: 100%; }
+  100% { width: 0; }
+}
+
 .animate-countdown {
   animation-name: countdown;
-  animation-duration: 5s;
-  animation-fill-mode: forwards;
-}
-
-.animate-countdown.paused {
-  animation-play-state: paused;
-}
-
-@keyframes countdown {
-  from {
-    width: 100%;
-  }
-
-  to {
-    width: 0;
-  }
+  animation-timing-function: linear;
 }
