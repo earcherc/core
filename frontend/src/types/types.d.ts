@@ -16,7 +16,7 @@ declare interface ToastType {
 
 declare interface IToastContext {
   toasts: Toast[];
-  addToast: (toast: Pick<Toast, 'type' | 'content'>) => void;
+  addToast: (toast: Pick<Toast, 'type' | 'content' | 'autoCloseDelay'>) => void;
   removeToast: (id: string) => void;
   pauseToast: (id: string) => void;
   resumeToast: (id: string) => void;
