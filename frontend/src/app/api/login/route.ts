@@ -11,12 +11,26 @@ export async function POST(request: Request) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'x-api-key': process.env.API_KEY || '',
+      'x-api-key': process.env.API_KEY ?? '',
     },
     body: params,
   });
 
-  const data = await res.json();
+  if (!res.ok) {
+    return NextResponse.json({ success: false });
+  }
 
-  return NextResponse.json(data);
+  const { access_token } = await res.json();
+
+  const cookie = {
+    name: 'jwt',
+    value: access_token,
+    maxAge: 60 * 60,
+    httpOnly: true,
+  };
+
+  const response = NextResponse.json({ success: true });
+  response.cookies.set(cookie);
+
+  return response;
 }

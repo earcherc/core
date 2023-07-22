@@ -1,21 +1,26 @@
 'use client';
-
+import { useRouter } from 'next/navigation';
 import React, { FormEvent, useState } from 'react';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const router = useRouter();
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const res = await fetch('/api/login', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ username, password }),
     });
 
-    const data = await res.json();
-    console.log(data);
+    const { success } = await res.json();
+    if (success) router.push('/dashboard');
   };
 
   return (
