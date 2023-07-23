@@ -10,7 +10,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userId, setUserId] = useState<number | null>(null);
   const [isDisabled, setIsDisabled] = useState<boolean | null>(null);
 
-  const setUser = ({ username, userId, isDisabled }: Omit<IAuthContext, 'isAuthenticated'>) => {
+  const setUser = ({ username, userId, isDisabled }: UserData) => {
     setUsername(username);
     setUserId(userId);
     setIsDisabled(isDisabled);
@@ -24,6 +24,15 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsDisabled(null);
   };
 
+  const isValidUser = (user: UserData): user is UserData => {
+    return (
+      user &&
+      typeof user.username === 'string' &&
+      typeof user.userId === 'number' &&
+      typeof user.isDisabled === 'boolean'
+    );
+  };
+
   useEffect(() => {
     const userCookie = document.cookie
       .split('; ')
@@ -31,8 +40,13 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       ?.split('=')[1];
 
     if (userCookie) {
-      const { username, userId, isDisabled } = JSON.parse(decodeURIComponent(userCookie));
-      setUser({ username, userId, isDisabled } as Omit<IAuthContext, 'isAuthenticated'>);
+      const user = JSON.parse(decodeURIComponent(userCookie));
+      if (isValidUser(user)) {
+        setUser(user);
+      } else {
+        console.error('Invalid user data in cookie:', user);
+        clearUser();
+      }
     } else {
       clearUser();
     }
