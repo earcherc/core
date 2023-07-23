@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { ToastContext } from './toast-provider';
 
-export default function useToast(): IToastContext {
+const useToast = (): IToastContext => {
   const context = useContext(ToastContext);
 
   if (!context) {
@@ -9,4 +9,6 @@ export default function useToast(): IToastContext {
   }
 
   return context;
-}
+};
+
+export default useToast;

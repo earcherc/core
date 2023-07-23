@@ -1,4 +1,4 @@
-declare type Toast = {
+type Toast = {
   id: string;
   type: string;
   content: string; // Or JSX.Element
@@ -7,17 +7,24 @@ declare type Toast = {
   isPaused: boolean;
 };
 
-declare interface ToastType {
+interface ToastType {
   bgColor: string;
   textColor: string;
   progressColor: string;
   icon: ReactElement | null;
 }
 
-declare interface IToastContext {
+interface IToastContext {
   toasts: Toast[];
   addToast: (toast: Pick<Toast, 'type' | 'content'> & Partial<Pick<Toast, 'autoCloseDelay'>>) => void;
   removeToast: (id: string) => void;
   pauseToast: (id: string) => void;
   resumeToast: (id: string) => void;
+}
+
+interface IAuthContext {
+  isAuthenticated: boolean;
+  username: string | null;
+  userId: number | null;
+  isDisabled: boolean | null;
 }

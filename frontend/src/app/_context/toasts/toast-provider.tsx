@@ -2,7 +2,7 @@
 
 import { v4 as uuid } from 'uuid';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
-import Toast from './toast';
+import Toast from '@components/toasts/toast';
 
 export const ToastContext = createContext<IToastContext | undefined>(undefined);
 
