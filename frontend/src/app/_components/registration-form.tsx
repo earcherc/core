@@ -47,10 +47,10 @@ const RegistrationForm = () => {
             </label>
             <div className="mt-2">
               <input
-                id="username"
-                name="username"
+                id="newUsername"
+                name="newUsername"
                 type="text"
-                autoComplete="username"
+                autoComplete="new-username"
                 placeholder="johndoe"
                 value={username}
                 onInput={(e) => {
@@ -69,10 +69,10 @@ const RegistrationForm = () => {
             </label>
             <div className="mt-2">
               <input
-                id="email"
-                name="email"
+                id="newEmail"
+                name="newEmail"
                 type="email"
-                autoComplete="email"
+                autoComplete="new-email"
                 placeholder="email@example.com"
                 value={email}
                 onInput={(e) => {
@@ -94,7 +94,7 @@ const RegistrationForm = () => {
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 value={password}
                 onInput={(e) => {
                   setPassword(e.currentTarget.value);
