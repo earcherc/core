@@ -29,7 +29,10 @@ export async function POST(request: Request) {
     value: body.access_token,
     maxAge: 60 * 60,
     httpOnly: true,
+    secure: true,
+    sameSite: 'strict' as const,
   };
+
   // Decode the JWT token to get the user data
   const { sub, user_id, disabled } = (await verifyJwtToken(body.access_token)) as MyJWTPayload;
 
@@ -43,6 +46,8 @@ export async function POST(request: Request) {
     name: 'user',
     value: JSON.stringify(userData),
     maxAge: 60 * 60,
+    secure: true,
+    sameSite: 'strict' as const,
   };
 
   const response = NextResponse.json({ body: { ...body, user: userData }, status: 200 });

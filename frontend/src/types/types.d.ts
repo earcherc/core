@@ -29,6 +29,7 @@ interface IAuthContext {
   isDisabled: boolean | null;
   setUser: (user: UserData) => void;
   clearUser: () => void;
+  logout: () => void;
 }
 
 type UserData = {

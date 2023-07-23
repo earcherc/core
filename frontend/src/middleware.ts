@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyJwtToken } from '@libs/utils';
 
-const PUBLIC_ROUTES = ['/login', '/register', '/'];
+const PUBLIC_ROUTES = ['/login', '/register', '/', '/logout'];
 const isPublicPage = (url: string) => PUBLIC_ROUTES.some((page) => page.startsWith(url));
 
 export async function middleware(request: NextRequest) {

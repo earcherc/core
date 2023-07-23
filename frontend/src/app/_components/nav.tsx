@@ -14,7 +14,7 @@ const navigation = [
 ];
 
 export default function Nav() {
-  const { username } = useAuth();
+  const { username, logout } = useAuth();
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -117,12 +117,15 @@ export default function Nav() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <Link
-                            href="/logout"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                          <button
+                            onClick={logout}
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'block w-full px-4 py-2 text-left text-sm text-gray-700',
+                            )}
                           >
                             Logout
-                          </Link>
+                          </button>
                         )}
                       </Menu.Item>
                     </Menu.Items>

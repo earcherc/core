@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState, createContext, useEffect } from 'react';
 
 export const AuthContext = createContext<IAuthContext | undefined>(undefined);
@@ -9,6 +10,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [username, setUsername] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
   const [isDisabled, setIsDisabled] = useState<boolean | null>(null);
+
+  const router = useRouter();
 
   const setUser = ({ username, userId, isDisabled }: UserData) => {
     setUsername(username);
@@ -22,6 +25,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUsername(null);
     setUserId(null);
     setIsDisabled(null);
+  };
+
+  const logout = async () => {
+    router.push('/');
+    await fetch('/api/logout', { method: 'GET' });
+    clearUser();
   };
 
   const isValidUser = (user: UserData): user is UserData => {
@@ -53,7 +62,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, username, userId, isDisabled, setUser, clearUser }}>
+    <AuthContext.Provider value={{ isAuthenticated, username, userId, isDisabled, setUser, clearUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
