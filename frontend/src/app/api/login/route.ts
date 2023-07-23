@@ -30,10 +30,8 @@ export async function POST(request: Request) {
     maxAge: 60 * 60,
     httpOnly: true,
   };
-
   // Decode the JWT token to get the user data
   const { sub, user_id, disabled } = (await verifyJwtToken(body.access_token)) as MyJWTPayload;
-
   const userCookie = {
     name: 'user',
     value: JSON.stringify({
@@ -44,7 +42,13 @@ export async function POST(request: Request) {
     maxAge: 60 * 60,
   };
 
-  const response = NextResponse.json({ body, status: 200 });
+  const userData = {
+    username: sub,
+    userId: user_id,
+    isDisabled: disabled,
+  };
+
+  const response = NextResponse.json({ body: { ...body, user: userData }, status: 200 });
   response.cookies.set(jwtCookie);
   response.cookies.set(userCookie);
 

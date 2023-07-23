@@ -45,7 +45,7 @@ export default function Nav() {
                     {(username && username.charAt(0).toUpperCase() + username?.slice(1)) || 'Unknown'}&apos;s Journal
                   </h1>
                 </div>
-                <div className="hidden sm:ml-6 sm:block">
+                <div className="hidden sm:ml-6 sm:flex sm:items-center">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
@@ -115,6 +115,16 @@ export default function Nav() {
                           </Link>
                         )}
                       </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            href="/logout"
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                          >
+                            Logout
+                          </Link>
+                        )}
+                      </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </Menu>
@@ -124,9 +134,9 @@ export default function Nav() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
+              {navigation.map((item, i) => (
                 <Disclosure.Button
-                  id={'tabs'}
+                  id={String(i)}
                   key={item.name}
                   as="a"
                   href={item.href}

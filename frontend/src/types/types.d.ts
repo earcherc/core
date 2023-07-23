@@ -27,4 +27,6 @@ interface IAuthContext {
   username: string | null;
   userId: number | null;
   isDisabled: boolean | null;
+  setUser: (user: Omit<IAuthContext, 'isAuthenticated'>) => void;
+  clearUser: () => void;
 }

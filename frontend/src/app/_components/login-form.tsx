@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import React, { FormEvent, useState } from 'react';
 import useToast from '../_context/toasts/toast-context';
 import classNames from 'classnames';
+import useAuth from '@app/_context/auth/auth-context';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
@@ -10,6 +11,7 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { addToast } = useToast();
+  const { setUser } = useAuth();
 
   const router = useRouter();
 
@@ -26,6 +28,7 @@ const LoginForm = () => {
 
     const { body, status } = await res.json();
     if (status == 200) {
+      setUser(body.user);
       router.push('/dashboard');
     } else {
       setErrorMessage(body.detail);
