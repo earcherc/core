@@ -21,6 +21,7 @@ pip install -r requirements-dev.txt
 ```
 
 Navigate to each service and perform the following:
+
 6. cd `_service`/
 7. `python3 -m venv venv`
 8. `direnv allow` in each service (if using envrc)
