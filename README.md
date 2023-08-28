@@ -24,6 +24,7 @@ pip install -r requirements-dev.txt
 ```
 
 Navigate to each service and perform the following:
+
 6. `cd _service/`
 7. `python3 -m venv venv`
 8. `direnv allow` in each service (if using envrc)
@@ -32,7 +33,7 @@ Navigate to each service and perform the following:
 pip install -r requirements.txt
 ```
 
-9. Use VSCode workspace to open project, then set interpreter path for each workspace venv (unless vscode correctly interprets)
+10. Use VSCode workspace to open project, then set interpreter path for each workspace venv (unless vscode correctly interprets)
 
 
 ### Docker
