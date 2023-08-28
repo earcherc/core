@@ -11,6 +11,7 @@
 - docker
 - docker-compose
 - colima/docker desktop (default)
+    - colima ipv6 issue https://github.com/abiosoft/colima/issues/583
 
 ### Local Development
 1. `cd /project_folder`
