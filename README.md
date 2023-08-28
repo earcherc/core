@@ -49,6 +49,7 @@ docker-compose up --build
 docker exec -it `container_name/id` psql -U ethancavill -d `db_name: auth_db/core_db`
 docker exec -it `container_name/id` alembic revision --autogenerate -m "Migration message goes here"
 docker exec -it `container_name/id` alembic upgrade head
+docker exec -it `container_name/id` env
 
 docker logs -f `container_name/id`
 docker volume ls
