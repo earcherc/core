@@ -13,7 +13,7 @@
 - colima/docker desktop (default)
 
 ### Local Development
-1. `cd /project_fodler`
+1. `cd /project_folder`
 2. `cd backend/`
 3. `python3 -m venv venv_dev` (create the global formatting venv)
 4. remove `.sample` from each services `.envrc.sample` and replace defaults
@@ -45,15 +45,13 @@ docker-compose up --build
 
 ### Useful Docker commands
 ```
-docker exec -it `docker_container_id/name` psql -U ethancavill -d `db_name: auth_db/core_db`
-docker exec -it `docker_container_id/name` alembic revision --autogenerate -m "Migration message goes here"
-docker exec -it `docker_container_id/name` alembic upgrade head
+docker exec -it `container_name/id` psql -U ethancavill -d `db_name: auth_db/core_db`
+docker exec -it `container_name/id` alembic revision --autogenerate -m "Migration message goes here"
+docker exec -it `container_name/id` alembic upgrade head
 
+docker logs -f `container_name/id`
 docker volume ls
 docker ps
-docker exec -it backend-auth-1 alembic upgrade head
-docker logs `container_id`
-
 ```
 
 `docker exec -it` - exec commands in a running container (it~>interact)
