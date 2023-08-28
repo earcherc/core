@@ -1,3 +1,5 @@
+import { changePassword, deleteAccount, updateUserDetails } from '@app/actions/userActions';
+
 export default function Profile() {
   return (
     <>
@@ -14,7 +16,7 @@ export default function Profile() {
                   </p>
                 </div>
 
-                <form className="md:col-span-2">
+                <form className="md:col-span-2" action={updateUserDetails}>
                   <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                     <div className="col-span-full flex items-center gap-x-8">
                       <img
@@ -115,7 +117,7 @@ export default function Profile() {
                   </p>
                 </div>
 
-                <form className="md:col-span-2">
+                <form className="md:col-span-2" action={changePassword}>
                   <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                     <div className="col-span-full">
                       <label htmlFor="current-password" className="block text-sm font-medium leading-6 text-white">
@@ -183,7 +185,7 @@ export default function Profile() {
                   </p>
                 </div>
 
-                <form className="flex items-start md:col-span-2">
+                <form className="flex items-start md:col-span-2" action={deleteAccount}>
                   <button
                     type="submit"
                     className="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400"
