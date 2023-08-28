@@ -34,7 +34,7 @@ pip install -r requirements.txt
 
 
 ### Docker
-1. Start Docker daemon
+1. Start Docker daemon (colima or default)
 2. Navigate to `backend/`
 3. Run Docker Compose with build:
 ```
