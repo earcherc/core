@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': process.env.API_KEY ?? '',
+      'x-api-key': process.env.API_KEY || '',
     },
     body: JSON.stringify({ username, email, password }),
   });

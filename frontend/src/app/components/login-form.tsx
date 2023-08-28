@@ -1,9 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React, { FormEvent, useState } from 'react';
-import useToast from '../_context/toasts/toast-context';
+import useToast from '../context/toasts/toast-context';
 import classNames from 'classnames';
-import useAuth from '@app/_context/auth/auth-context';
+import useAuth from '@app/context/auth/auth-context';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');

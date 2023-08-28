@@ -3,7 +3,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CheckCircleIcon, XCircleIcon, ExclamationTriangleIcon, XMarkIcon } from '@heroicons/react/20/solid';
-import useToast from '../../_context/toasts/toast-context';
+import useToast from '../../context/toasts/toast-context';
 import ProgressBar from './progress-bar';
 
 const Toast = ({ toast }: { toast: Toast }) => {

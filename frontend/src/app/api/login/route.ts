@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'x-api-key': process.env.API_KEY ?? '',
+      'x-api-key': process.env.API_KEY || '',
     },
     body: params,
   });
