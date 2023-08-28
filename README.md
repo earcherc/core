@@ -6,23 +6,25 @@
 
 ## Backend 
 ### Deps
+- homebrew/nix (package manager)
 - direnv
 - docker
 - docker-compose
+- colima/docker desktop (default)
 
 ### Local Development
-1. cd backend/
-2. `python3 -m venv venv_dev`
-3. remove `.sample` from all `.envrc.sample`
-4. `direnv allow` from root backend dir
-5. Install requirements for `venv_dev` (global formatting `venv`)
+1. `cd /project_fodler`
+2. `cd backend/`
+3. `python3 -m venv venv_dev` (create the global formatting venv)
+4. remove `.sample` from each services `.envrc.sample` and replace defaults
+5. `direnv allow` from backend root dir
+6. Install requirements for `venv_dev` (global formatting `venv`)
 ```
 pip install -r requirements-dev.txt
 ```
 
 Navigate to each service and perform the following:
-
-6. cd `_service`/
+6. `cd _service/`
 7. `python3 -m venv venv`
 8. `direnv allow` in each service (if using envrc)
 9. install requirements for each `venv`
@@ -34,20 +36,27 @@ pip install -r requirements.txt
 
 
 ### Docker
-1. Start Docker daemon (colima or default)
-2. Navigate to `backend/`
-3. Run Docker Compose with build:
+1. Start Docker daemon (colima or default docker desktop)
+2. Navigate to root `backend/`
+3. Start docker process with docker-compose (w/wo `--build`):
 ```
 docker-compose up --build
 ```
 
 ### Useful Docker commands
 ```
-docker exec -it backend-auth-1 alembic revision --autogenerate -m "Initial migration"
-docker exec -it e5ea076b018d psql -U ethancavill -d auth_db
+docker exec -it `docker_container_id/name` psql -U ethancavill -d `db_name: auth_db/core_db`
+docker exec -it `docker_container_id/name` alembic revision --autogenerate -m "Migration message goes here"
+docker exec -it `docker_container_id/name` alembic upgrade head
+
 docker volume ls
+docker ps
 docker exec -it backend-auth-1 alembic upgrade head
+docker logs `container_id`
+
 ```
+
+`docker exec -it` - exec commands in a running container (it~>interact)
 
 ### Dbeaver connection
 Host: `0.0.0.0`
