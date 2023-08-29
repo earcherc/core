@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 from fastapi import HTTPException, Depends
+
+from ..message_handlers.auth_message_publisher import publish_to_queue
 from ..models import User as UserTable
 from passlib.context import CryptContext
 from sqlmodel import Session, col, or_, select
@@ -16,10 +18,14 @@ def get_user(
     username: str, session: Session = Depends(get_session)
 ) -> Optional[UserInDB]:
     statement = select(UserTable).where(UserTable.username == username)
+
     user = session.exec(statement).first()
+
     if user is None:
         return None
+
     assert user.id is not None
+
     return UserInDB(
         id=user.id,
         username=user.username,
@@ -62,6 +68,8 @@ async def register_user(user_data: User, session: Session):
     # Refresh the user object to get the ID assigned by the database
     session.refresh(new_user)
 
+    publish_to_queue("New user registered")
+
     return new_user.id
 
 
@@ -75,12 +83,17 @@ def get_password_hash(password):
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
+
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
+
     to_encode.update({"exp": expire})
+
     if Config.SECRET_KEY is None or Config.ALGORITHM is None:
         raise ValueError("Invalid configuration: missing SECRET_KEY or ALGORITHM")
+
     encoded_jwt = jwt.encode(to_encode, Config.SECRET_KEY, algorithm=Config.ALGORITHM)
+
     return encoded_jwt
