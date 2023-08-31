@@ -7,6 +7,17 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
+# Install libpq-dev for psycopg2 python package
+# gcc: GNU Compiler Collection, for compiling C extensions
+# netcat: Network utility to support the wait-for.sh script
+RUN apt-get update && \
+  apt-get install -y --no-install-recommends \
+  gcc \
+  libpq-dev \
+  netcat-traditional
+
+RUN apt-get update && apt-get install -y 
+
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
 
@@ -19,4 +30,4 @@ RUN chmod +x ./run.sh
 RUN chmod +x ./wait-for.sh
 
 # Introduce a delay to ensure RabbitMQ is fully initialized before this service starts
-CMD ["./wait-for.sh", "rabbitmq:5672", "--", "./run.sh"]
+CMD ["./wait-for.sh"]

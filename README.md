@@ -53,7 +53,7 @@ docker exec -it <container_name/id> alembic upgrade head
 docker exec -it <container_name/id> env
 docker exec -it <container_name/id> /bin/bash
 
-
+docker-compose build <service_name>
 docker logs -f <container_name/id>
 docker volume ls
 docker ps
