@@ -14,7 +14,7 @@
     - colima ipv6 issue https://github.com/abiosoft/colima/issues/583
 
 ### Local Development
-1. `cd /project_folder`
+1. `cd <root_project_folder>/`
 2. `cd backend/`
 3. `python3 -m venv venv_dev` (create the global formatting venv)
 4. remove `.sample` from each services `.envrc.sample` and replace defaults
@@ -26,7 +26,7 @@ pip install -r requirements-dev.txt
 
 Navigate to each service and perform the following:
 
-6. `cd _service/`
+6. `cd <service>/`
 7. `python3 -m venv venv`
 8. `direnv allow` in each service (if using envrc)
 9. install requirements for each `venv`
@@ -34,7 +34,7 @@ Navigate to each service and perform the following:
 pip install -r requirements.txt
 ```
 
-10. Use VSCode workspace to open project, then set interpreter path for each workspace venv (unless vscode correctly interprets)
+1.  Use VSCode workspace to open project, then set interpreter path for each workspace venv (unless vscode correctly interprets)
 
 
 ### Docker
@@ -47,12 +47,14 @@ docker-compose up --build
 
 ### Useful Docker commands
 ```
-docker exec -it `container_name/id` psql -U ethancavill -d `db_name: auth_db/core_db`
-docker exec -it `container_name/id` alembic revision --autogenerate -m "Migration message goes here"
-docker exec -it `container_name/id` alembic upgrade head
-docker exec -it `container_name/id` env
+docker exec -it <container_name/id> psql -U <username> -d <db_name: auth_db/core_db>
+docker exec -it <container_name/id> alembic revision --autogenerate -m "Migration message goes here"
+docker exec -it <container_name/id> alembic upgrade head
+docker exec -it <container_name/id> env
+docker exec -it <container_name/id> /bin/bash
 
-docker logs -f `container_name/id`
+
+docker logs -f <container_name/id>
 docker volume ls
 docker ps
 ```

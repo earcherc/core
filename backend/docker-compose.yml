@@ -47,12 +47,22 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
-    
+
   rabbitmq:
     image: "rabbitmq:management"
     ports:
       - "5672:5672"
       - "15672:15672"
+
+  rabbitmq_consumer:
+    # Don't need to expose ports since this is only acccessible within docker network
+    build: ./rabbitmq_consumer
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./rabbitmq_consumer:/app
 
 volumes:
   db_data:

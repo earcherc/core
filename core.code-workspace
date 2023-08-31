@@ -20,6 +20,10 @@
 			"path": "backend/gateway",
 			"name": "Gateway"
 		}
+		{
+			"path": "backend/rabbitmq_consumer",
+			"name": "RabbitMQ Consumer"
+		}
 	],
 	"settings": {
 		"[python]": {

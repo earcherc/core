@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.9
+FROM python:3.11-slim
 
 # Set the working directory to /app
 WORKDIR /app
@@ -17,6 +17,7 @@ EXPOSE 8001
 ENV NAME Core
 
 # Make the shell script executable
+# Note: Ensure this script is executable locally as permissions are preserved when copied into the container.
 RUN chmod +x ./run.sh
 
 # Run the shell script when the container launches
