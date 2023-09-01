@@ -47,9 +47,10 @@ docker-compose up --build
 
 ### Useful Docker commands
 ```
-docker exec -it <psql_container_name/id> psql -U <username> -d <db_name: auth_db/core_db>
+docker exec -it <postgresql_db_container_name/id> psql -U <username> -d <db_name: auth_db/core_db>
 docker exec -it <container_name/id> alembic revision --autogenerate -m "Migration message goes here"
 docker exec -it <container_name/id> alembic upgrade head
+docker exec -it <container_name/id> alembic downgrade -1
 docker exec -it <container_name/id> env
 docker exec -it <container_name/id> /bin/bash
 
@@ -58,7 +59,7 @@ docker-compose build <service_name>
 docker-compose up -d --no-deps --force-recreate <service_name>
 docker-compose down
 docker logs -f <container_name/id>
-docker-compose logs db
+docker-compose logs <service_name: db>
 docker volume rm <volume_name>
 docker volume ls
 docker image ls
@@ -68,5 +69,10 @@ docker ps
 `docker exec -it` - exec commands in a running container (it~>interact)
 
 ### Dbeaver connection
+# sometimes there are issues connecting to docker psql db, may need to close dbeaver and restart/remove volumes docker to re-init db
+Connection settings / PostgreSQL / [x] Show all databases
 Host: `0.0.0.0`
 Port: `5432`
+Database: `EMPTY`
+Username: `<POSTGRES_USER>`
+Password: `<POSTGRES_PASSWORD>`
