@@ -47,15 +47,21 @@ docker-compose up --build
 
 ### Useful Docker commands
 ```
-docker exec -it <container_name/id> psql -U <username> -d <db_name: auth_db/core_db>
+docker exec -it <psql_container_name/id> psql -U <username> -d <db_name: auth_db/core_db>
 docker exec -it <container_name/id> alembic revision --autogenerate -m "Migration message goes here"
 docker exec -it <container_name/id> alembic upgrade head
 docker exec -it <container_name/id> env
 docker exec -it <container_name/id> /bin/bash
 
+docker-compose restart <service_name>
 docker-compose build <service_name>
+docker-compose up -d --no-deps --force-recreate <service_name>
+docker-compose down
 docker logs -f <container_name/id>
+docker-compose logs db
+docker volume rm <volume_name>
 docker volume ls
+docker image ls
 docker ps
 ```
 

@@ -1,3 +1,4 @@
+# Asbolute import required for Docker to correctly import the module
 from app.consumers import core_consumer
 import pika
 
