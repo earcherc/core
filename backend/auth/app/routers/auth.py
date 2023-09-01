@@ -24,7 +24,11 @@ async def register(user: User, session: Session = Depends(get_session)):
     if not user_id:
         raise HTTPException(status_code=400, detail="Registration failed")
 
-    publish_to_queue(f"New user registered with ID {user_id}")
+    # Create a dictionary to send as a message
+    message_dict = {"user_id": user_id, "action": "register"}
+
+    # Publish the dictionary to the queue
+    publish_to_queue(message_dict)
 
     return {"user_id": user_id}
 

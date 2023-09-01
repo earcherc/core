@@ -1,4 +1,4 @@
 #!/bin/sh
 set -e
 
-python app/consumer.py
+python -m app.main
