@@ -3,6 +3,7 @@ version: '3.8'
 services:
   auth:
     build: ./auth
+    image: auth_service:latest
     ports:
       - "8000:8000"
     env_file:
@@ -15,8 +16,9 @@ services:
 
   core:
     build: ./core
+    image: core_service:latest
     ports:
-      - "8001:8000"
+      - "8001:8001"
     env_file:
       - .env
     depends_on:
@@ -27,8 +29,9 @@ services:
 
   gateway:
     build: ./gateway
+    image: my_gateway_service:latest
     ports:
-      - "8002:8000"
+      - "8002:8002"
     env_file:
       - .env
     depends_on:
@@ -57,6 +60,7 @@ services:
   rabbitmq_consumer:
     # Don't need to expose ports since this is only acccessible within docker network
     build: ./rabbitmq_consumer
+    image: rabbitmq_consumer_service:latest
     env_file:
       - .env
     depends_on:

@@ -1,5 +1,5 @@
 from typing import Optional, List
-from sqlmodel import Field, Relationship, SQLModel, Index
+from sqlmodel import Field, Relationship, SQLModel
 from datetime import datetime
 from sqlalchemy import UniqueConstraint
 from sqlalchemy import CheckConstraint
@@ -24,9 +24,14 @@ class UserProfile(SQLModel, table=True):
 
     # Relationships
     profile_photos: List["ProfilePhoto"] = Relationship(back_populates="user_profile")
-    sent_connections: List["Connection"] = Relationship(back_populates="user_profile1")
+    sent_connections: List["Connection"] = Relationship(
+        back_populates="user_profile1",
+        sa_relationship_kwargs={"foreign_keys": "[Connection.user_profile1_id]"},
+    )
+    # https://github.com/tiangolo/sqlmodel/issues/10
     received_connections: List["Connection"] = Relationship(
-        back_populates="user_profile2"
+        back_populates="user_profile2",
+        sa_relationship_kwargs={"foreign_keys": "[Connection.user_profile2_id]"},
     )
     user_details: "UserProfileDetails" = Relationship(back_populates="user_profile")
 
@@ -72,8 +77,19 @@ class Connection(SQLModel, table=True):
     created_at: datetime
 
     # Relationships
-    user_profile1: UserProfile = Relationship(back_populates="sent_connections")
-    user_profile2: UserProfile = Relationship(back_populates="received_connections")
+    # https://github.com/tiangolo/sqlmodel/issues/10
+    user_profile1: UserProfile = Relationship(
+        back_populates="sent_connections",
+        sa_relationship_kwargs={
+            "primaryjoin": "Connection.user_profile1_id == UserProfile.id"
+        },
+    )
+    user_profile2: UserProfile = Relationship(
+        back_populates="received_connections",
+        sa_relationship_kwargs={
+            "primaryjoin": "Connection.user_profile2_id == UserProfile.id"
+        },
+    )
 
 
 class UserProfileDetails(SQLModel, table=True):

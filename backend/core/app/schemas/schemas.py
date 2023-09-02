@@ -42,8 +42,8 @@ class ConnectionCreate(Connection):
     pass
 
 
-class ConnectionUpdate(Connection):
-    pass
+class ConnectionUpdate(BaseModel):
+    status: Optional[ConnectionStatus] = None
 
 
 class ConnectionInDB(Connection):
@@ -61,6 +61,23 @@ class ProfilePhoto(BaseModel):
     uploaded_at: datetime
 
 
+class ProfilePhotoCreate(ProfilePhoto):
+    pass
+
+
+class ProfilePhotoUpdate(BaseModel):
+    url: Optional[str] = None
+    caption: Optional[str] = None
+    is_main: Optional[bool] = None
+
+
+class ProfilePhotoInDB(ProfilePhoto):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
 class UserProfileDetails(BaseModel):
     user_profile_id: int
     bio: Optional[str] = None
@@ -71,3 +88,23 @@ class UserProfileDetails(BaseModel):
     favorite_music: Optional[str] = None
     favorite_movies: Optional[str] = None
     favorite_books: Optional[str] = None
+
+
+class UserProfileDetailsCreate(UserProfileDetails):
+    pass
+
+
+class UserProfileDetailsUpdate(BaseModel):
+    bio: Optional[str] = None
+    job_title: Optional[str] = None
+    company: Optional[str] = None
+    school: Optional[str] = None
+    hobbies: Optional[str] = None
+    favorite_music: Optional[str] = None
+    favorite_movies: Optional[str] = None
+    favorite_books: Optional[str] = None
+
+
+class UserProfileDetailsInDB(UserProfileDetails):
+    class Config:
+        orm_mode = True

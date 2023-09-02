@@ -1,6 +1,10 @@
 from typing import Optional
 from ..models import UserProfile as UserProfileTable
-from ..schemas import UserProfileInDB, UserProfile, UserProfileCreate
+from ..schemas import (
+    UserProfileInDB,
+    UserProfileCreate,
+    UserProfileUpdate,
+)
 from sqlmodel import Session, select
 from fastapi import HTTPException
 
@@ -15,7 +19,7 @@ async def get_user_profile_func(
     if not user_profile:
         raise HTTPException(status_code=404, detail="User profile not found")
 
-    return UserProfileInDB(**user_profile.__dict__)
+    return UserProfileInDB.from_orm(user_profile)
 
 
 async def create_user_profile_func(
@@ -38,11 +42,13 @@ async def create_user_profile_func(
     session.commit()
     session.refresh(user_profile)
 
-    return UserProfileInDB(**user_profile.__dict__)
+    return UserProfileInDB.from_orm(user_profile)
 
 
 async def update_user_profile_func(
-    user_id: int, user_profile_data: UserProfile, session: Session
+    user_id: int,
+    user_profile_data: UserProfileUpdate,
+    session: Session,
 ):
     user_profile_statement = select(UserProfileTable).where(
         UserProfileTable.user_id == user_id
@@ -52,14 +58,15 @@ async def update_user_profile_func(
     if not user_profile:
         raise HTTPException(status_code=404, detail="User profile not found")
 
-    for var, value in vars(user_profile_data).items():
-        setattr(user_profile, var, value if value else getattr(user_profile, var))
+    # Only update fields that are set
+    for var, value in user_profile_data.dict(exclude_unset=True).items():
+        setattr(user_profile, var, value)
 
     session.add(user_profile)
     session.commit()
     session.refresh(user_profile)
 
-    return UserProfileInDB(**user_profile.__dict__)
+    return UserProfileInDB.from_orm(user_profile)
 
 
 async def delete_user_profile_func(user_id: int, session: Session):

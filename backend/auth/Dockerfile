@@ -12,7 +12,8 @@ RUN apt-get update && \
   apt-get install -y --no-install-recommends \
   gcc \
   build-essential \
-  libpq-dev
+  libpq-dev \
+  netcat-traditional
 
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
@@ -21,11 +22,12 @@ RUN pip install -r requirements.txt
 EXPOSE 8000
 
 # Define environment variable
-ENV NAME Auth 
+ENV NAME Auth
 
-# Make the shell script executable
-# Note: Ensure this script is executable locally as permissions are preserved when copied into the container.
+# Make the shell scripts executable
+# Note: Ensure these scripts are executable locally as permissions are preserved when copied into the container.
 RUN chmod +x ./run.sh
+RUN chmod +x ./wait-for-db.sh
 
 # Run the shell script when the container launches
-CMD ["./run.sh"]
+CMD ["./wait-for-db.sh"]  

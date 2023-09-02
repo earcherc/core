@@ -64,12 +64,13 @@ docker volume rm <volume_name>
 docker volume ls
 docker image ls
 docker ps
+apt-get update && apt-get install curl (install curl in container)
 ```
 
 `docker exec -it` - exec commands in a running container (it~>interact)
 
 ### Dbeaver connection
-# sometimes there are issues connecting to docker psql db, may need to close dbeaver and restart/remove volumes docker to re-init db
+# If issues reconnecting to docker db, may need to flush DBeaver cache --> 'Invalidate/Reconnect' 
 Connection settings / PostgreSQL / [x] Show all databases
 Host: `0.0.0.0`
 Port: `5432`

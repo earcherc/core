@@ -27,12 +27,17 @@ def message_callback(ch, method, properties, body):
     # Prepare the payload for the Core service
     payload = {
         "user_id": user_data_dict["user_id"],
-        "favorite_color": None,
-        "bio": None,
+        "first_name": None,
+        "last_name": None,
+        "date_of_birth": None,
+        "gender": None,
+        "interested_in_gender": None,
+        "latitude": None,
+        "longitude": None,
     }
 
     # HTTP POST request to the Core service
-    core_service_url = "http://core:8001/user_profile/"
+    core_service_url = "http://core:8001/user-profile/"
 
     with httpx.Client() as client:
         response = client.post(core_service_url, json=payload)
