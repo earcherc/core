@@ -1,4 +1,5 @@
 # Core
+This template provides a streamlined foundation for building scalable Python microservices and Next.js 13 web applications, all within a Dockerized environment.
 
 ## Planning Doc
 - [Google Docs](https://docs.google.com/document/d/1nWxq26N9xc58UbZNNJ4-m58uU7EoFh0y7El0LYVcf4U/edit?usp=sharing)
@@ -33,8 +34,12 @@ Navigate to each service and perform the following:
 ```
 pip install -r requirements.txt
 ```
+10. install the shared_schemas package in each venv manually
+```
+pip install ../shared_schemas
+```
 
-1.  Use VSCode workspace to open project, then set interpreter path for each workspace venv (unless vscode correctly interprets)
+11.  Use VSCode workspace to open project, then set interpreter path for each workspace venv (unless vscode correctly interprets)
 
 
 ### Docker
@@ -71,11 +76,26 @@ apt-get update && apt-get install curl (install curl in container)
 
 `docker exec -it` - exec commands in a running container (it~>interact)
 
-### Dbeaver connection
-# If issues reconnecting to docker db, may need to flush DBeaver cache --> 'Invalidate/Reconnect' 
-Connection settings / PostgreSQL / [x] Show all databases
-Host: `0.0.0.0`
-Port: `5432`
-Database: `EMPTY`
-Username: `<POSTGRES_USER>`
-Password: `<POSTGRES_PASSWORD>`
+### DBeaver Connection
+
+If you encounter issues while reconnecting to the Dockerized PostgreSQL database, you may need to clear the DBeaver cache. Perform the following:
+
+- Right-click on the connection
+- Choose 'Invalidate/Reconnect'
+
+#### Connection Settings
+
+To configure your PostgreSQL database connection in DBeaver, use the following settings:
+
+- **Database**: PostgreSQL
+- **Show All Databases**: Check this option
+
+##### Connection Parameters:
+
+| Parameter  | Value            | Description                 |
+|------------|------------------|-----------------------------|
+| Host       | `0.0.0.0`        | Host address                |
+| Port       | `5432`           | Port number                 |
+| Database   | `EMPTY`          | Leave this field empty      |
+| Username   | `<POSTGRES_USER>`| Replace with actual username|
+| Password   | `<POSTGRES_PASSWORD>`| Replace with actual password|
