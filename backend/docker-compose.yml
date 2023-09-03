@@ -3,7 +3,7 @@ version: '3.8'
 services:
   auth:
     build: ./auth
-    image: auth_service:latest
+    image: auth_service:1.0.0
     ports:
       - "8000:8000"
     env_file:
@@ -16,7 +16,7 @@ services:
 
   core:
     build: ./core
-    image: core_service:latest
+    image: core_service:1.0.0
     ports:
       - "8001:8001"
     env_file:
@@ -29,7 +29,7 @@ services:
 
   gateway:
     build: ./gateway
-    image: my_gateway_service:latest
+    image: my_gateway_service:1.0.0
     ports:
       - "8002:8002"
     env_file:
