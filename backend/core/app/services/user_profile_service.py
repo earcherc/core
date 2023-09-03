@@ -1,6 +1,6 @@
 from typing import Optional
 from ..models import UserProfile as UserProfileTable
-from ..schemas import (
+from shared_schemas.core import (
     UserProfileInDB,
     UserProfileCreate,
     UserProfileUpdate,

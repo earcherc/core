@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlmodel import Session
-from ..schemas import UserProfileCreate, UserProfileUpdate, UserProfileInDB
+from shared_schemas.core import UserProfileCreate, UserProfileUpdate, UserProfileInDB
 from ..services.user_profile_service import (
     create_user_profile_func,
     get_user_profile_func,

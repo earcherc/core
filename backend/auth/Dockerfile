@@ -5,7 +5,10 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copy the current directory contents into the container at /app
-COPY . /app
+COPY ./auth /app
+
+# Copy the shared_schemas directory into the container
+COPY ./shared_schemas /shared_schemas
 
 # Install libpq-dev for psycopg2 python package
 RUN apt-get update && \
@@ -16,7 +19,11 @@ RUN apt-get update && \
   netcat-traditional
 
 # Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install -r ./requirements.txt
+
+# Install the shared_schemas package - made available to service through the named volume
+RUN cd /shared_schemas && pip install .
+
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
@@ -30,4 +37,4 @@ RUN chmod +x ./run.sh
 RUN chmod +x ./wait-for-db.sh
 
 # Run the shell script when the container launches
-CMD ["./wait-for-db.sh"]  
+CMD ["./wait-for-db.sh"] 

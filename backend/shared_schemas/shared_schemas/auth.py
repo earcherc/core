@@ -1,5 +1,6 @@
 from typing import Optional, Union
 
+# Ignore error, resolved when package is installed in services
 from pydantic import BaseModel
 
 

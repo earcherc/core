@@ -8,7 +8,7 @@ from sqlmodel import Session, col, or_, select
 from jose import jwt
 from typing import Optional
 from app import get_session, Config
-from ..schemas import UserInDB, User
+from shared_schemas.auth import UserInDB, User
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

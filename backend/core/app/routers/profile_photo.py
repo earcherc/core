@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlmodel import Session
-from ..schemas import ProfilePhotoCreate, ProfilePhotoUpdate, ProfilePhotoInDB
+from shared_schemas.core import ProfilePhotoCreate, ProfilePhotoUpdate, ProfilePhotoInDB
 from ..services.profile_photo_service import (
     create_profile_photo_func,
     get_profile_photo_func,

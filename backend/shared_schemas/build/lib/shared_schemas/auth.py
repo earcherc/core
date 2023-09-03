@@ -1,5 +1,6 @@
 from typing import Optional, Union
 
+# Ignore error, resolved when package is installed in services
 from pydantic import BaseModel
 
 
@@ -8,6 +9,11 @@ class User(BaseModel):
     email: str
     password: Union[str, None] = None
     disabled: Union[bool, None] = None
+
+
+class UserInDB(User):
+    id: int
+    hashed_password: str
 
 
 class Token(BaseModel):

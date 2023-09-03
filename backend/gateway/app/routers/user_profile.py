@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from ..services import forward_request, get_current_active_user
-from ..schemas import UserProfile, TokenData, UserProfileCreate
+from shared_schemas.auth import TokenData
+from shared_schemas.core import UserProfile, UserProfileCreate
 
 router = APIRouter()
 

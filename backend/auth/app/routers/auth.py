@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
 from datetime import timedelta
-from ..schemas import User, Token
+from shared_schemas.auth import User, Token
 from ..services import (
     get_user,
     verify_password,

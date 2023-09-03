@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   auth:
-    build: ./auth
+    build:
+      context: .
+      dockerfile: ./auth/Dockerfile
     image: auth_service:1.0.0
     ports:
       - "8000:8000"
@@ -15,7 +17,9 @@ services:
       - ./auth:/app
 
   core:
-    build: ./core
+    build:
+      context: .
+      dockerfile: ./core/Dockerfile
     image: core_service:1.0.0
     ports:
       - "8001:8001"
@@ -28,7 +32,9 @@ services:
       - ./core:/app
 
   gateway:
-    build: ./gateway
+    build:
+      context: .
+      dockerfile: ./gateway/Dockerfile
     image: my_gateway_service:1.0.0
     ports:
       - "8002:8002"
@@ -69,4 +75,4 @@ services:
       - ./rabbitmq_consumer:/app
 
 volumes:
-  db_data:
+  db_data: {}

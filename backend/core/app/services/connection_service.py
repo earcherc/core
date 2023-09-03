@@ -2,7 +2,7 @@ from typing import List, Optional
 from sqlmodel import Session, select
 from fastapi import HTTPException
 from ..models import Connection as ConnectionTable
-from ..schemas import ConnectionCreate, ConnectionUpdate, ConnectionInDB
+from shared_schemas.core import ConnectionCreate, ConnectionUpdate, ConnectionInDB
 
 
 async def create_connection_func(

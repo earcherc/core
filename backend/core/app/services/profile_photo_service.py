@@ -2,7 +2,7 @@ from typing import List, Optional
 from sqlmodel import Session, select
 from fastapi import HTTPException
 from ..models import ProfilePhoto as ProfilePhotoTable
-from ..schemas import ProfilePhotoCreate, ProfilePhotoUpdate, ProfilePhotoInDB
+from shared_schemas.core import ProfilePhotoCreate, ProfilePhotoUpdate, ProfilePhotoInDB
 
 
 async def create_profile_photo_func(

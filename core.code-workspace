@@ -19,10 +19,14 @@
 		{
 			"path": "backend/gateway",
 			"name": "Gateway"
-		}
+		},
 		{
 			"path": "backend/rabbitmq_consumer",
 			"name": "RabbitMQ Consumer"
+		},
+		{
+			"path": "backend/shared_schemas",
+			"name": "Schemas"
 		}
 	],
 	"settings": {

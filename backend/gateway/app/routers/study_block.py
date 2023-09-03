@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from ..services import forward_request, get_current_active_user
-from ..schemas.core_schemas import StudyBlock, StudyBlockCreate, StudyBlockUpdate
-from ..schemas import TokenData
+from shared_schemas.core import StudyBlock, StudyBlockCreate, StudyBlockUpdate
+from shared_schemas.auth import TokenData
 
 router = APIRouter()
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlmodel import Session
-from ..schemas import ConnectionCreate, ConnectionUpdate, ConnectionInDB
+from shared_schemas.core import ConnectionCreate, ConnectionUpdate, ConnectionInDB
 from ..services.connection_service import (
     create_connection_func,
     get_connection_func,

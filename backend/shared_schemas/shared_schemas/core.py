@@ -1,8 +1,9 @@
-from enum import Enum
 from datetime import datetime
+
+# Ignore error, resolved when package is installed in services
 from pydantic import BaseModel
-from typing import Optional, List
-from ..models import ConnectionStatus, Gender
+from typing import Optional
+from .enums import ConnectionStatus, Gender
 
 
 class UserProfile(BaseModel):

@@ -3,7 +3,7 @@ from sqlmodel import Field, Relationship, SQLModel
 from datetime import datetime
 from sqlalchemy import UniqueConstraint
 from sqlalchemy import CheckConstraint
-from .enums import ConnectionStatus, Gender
+from shared_schemas.enums import Gender, ConnectionStatus
 
 
 # UserProfile replaces the User table in your core service

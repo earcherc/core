@@ -4,7 +4,3 @@ from .connections import (
     UserProfileDetails,
     Connection,
 )
-from .enums import (
-    Gender,
-    ConnectionStatus,
-)

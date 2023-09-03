@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from ..services import forward_request, get_current_active_user
-from ..schemas.core_schemas import DailyGoalCreate, DailyGoalUpdate
-from ..schemas import TokenData
+from shared_schemas.core import DailyGoalCreate, DailyGoalUpdate
+from shared_schemas.auth import TokenData
 
 router = APIRouter()
 

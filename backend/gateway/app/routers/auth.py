@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from ..services import forward_request
-from ..schemas import User
+from shared_schemas.auth import User
 from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()
