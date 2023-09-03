@@ -47,22 +47,24 @@ docker-compose up --build
 
 ### Useful Docker commands
 ```
-docker exec -it <postgresql_db_container_name/id> psql -U <username> -d <db_name: auth_db/core_db>
-docker exec -it <container_name/id> alembic revision --autogenerate -m "Migration message goes here"
-docker exec -it <container_name/id> alembic upgrade head
-docker exec -it <container_name/id> alembic downgrade -1
-docker exec -it <container_name/id> env
-docker exec -it <container_name/id> /bin/bash
+docker exec -it <postgres_db_container_id> psql -U <username> -d <db_name: auth_db/core_db>
+docker exec -it <container_id> alembic revision --autogenerate -m "Migration message goes here"
+docker exec -it <container_id> alembic upgrade head
+docker exec -it <container_id> alembic downgrade -1
+docker exec -it <container_id> env
+docker exec -it <container_id> /bin/bash
 
 docker-compose restart <service_name>
 docker-compose build <service_name>
 docker-compose up -d --no-deps --force-recreate <service_name>
 docker-compose down
-docker logs -f <container_name/id>
+docker logs -f <container_id>
 docker-compose logs <service_name: db>
 docker volume rm <volume_name>
 docker volume ls
 docker image ls
+docker image prune
+docker image prune -a
 docker ps
 apt-get update && apt-get install curl (install curl in container)
 ```
