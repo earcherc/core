@@ -1,12 +1,12 @@
 from fastapi import FastAPI, Depends
 from app.middleware import check_permission
 from app.routers import (
+    aggregator,
     auth,
     connection,
     profile_detail,
     profile_photo,
     user_profile,
-    aggregators,
 )
 
 app = FastAPI(dependencies=[Depends(check_permission)])
@@ -26,4 +26,4 @@ app.include_router(
     profile_photo.router, prefix="/profile-photo", tags=["Profile Photo"]
 )
 
-app.include_router(aggregators.router, prefix="/aggregator", tags=["Aggregator"])
+app.include_router(aggregator.router, prefix="/aggregator", tags=["Aggregator"])
