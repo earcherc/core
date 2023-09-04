@@ -13,7 +13,9 @@ class User(BaseModel):
 
 class UserInDB(User):
     id: int
-    hashed_password: str
+
+    class Config:
+        orm_mode = True
 
 
 class Token(BaseModel):
