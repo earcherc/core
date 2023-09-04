@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 from ..config import Config
 from jose import JWTError, jwt
-from ..schemas import User, TokenData
+from shared_schemas.auth import TokenData
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -64,15 +64,19 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         if Config.SECRET_KEY is None or Config.ALGORITHM is None:
             raise ValueError("Invalid configuration: missing SECRET_KEY or ALGORITHM")
+
         payload = jwt.decode(token, Config.SECRET_KEY, algorithms=[Config.ALGORITHM])
         username: str = payload.get("sub", "")
         user_id: int = payload.get("user_id", 0)
         disabled: bool = payload.get("disabled", False)
+
         if username is None or user_id == 0:
             raise credentials_exception
+
         token_data = TokenData(username=username, user_id=user_id, disabled=disabled)
     except JWTError:
         raise credentials_exception
+
     return token_data
 
 

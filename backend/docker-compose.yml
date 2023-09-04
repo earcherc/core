@@ -35,7 +35,7 @@ services:
     build:
       context: .
       dockerfile: ./gateway/Dockerfile
-    image: my_gateway_service:1.0.0
+    image: gateway_service:1.0.0
     ports:
       - "8002:8002"
     env_file:
