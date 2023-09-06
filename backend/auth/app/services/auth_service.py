@@ -7,7 +7,7 @@ from sqlmodel import Session, col, or_, select
 from jose import jwt
 from typing import Optional, Dict
 from app import Config
-from shared_schemas.auth import UserInDB, User
+from shared_schemas.auth import UserInDB, UserCreate
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -22,7 +22,7 @@ async def get_user_func(username: str, session: Session) -> Optional[UserInDB]:
     return UserInDB.from_orm(user)
 
 
-async def register_user_func(user_data: User, session: Session) -> int:
+async def register_user_func(user_data: UserCreate, session: Session) -> int:
     user_exists_statement = select(UserTable).where(
         or_(
             col(UserTable.username) == user_data.username,

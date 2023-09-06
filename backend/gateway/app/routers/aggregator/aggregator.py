@@ -1,13 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from ..services import forward_request, get_current_active_user
+from fastapi import APIRouter, Depends, HTTPException
+from ...services import forward_request, get_current_active_user
 from shared_schemas.auth import TokenData
 
 router = APIRouter()
 
 
-@router.get("/aggregated-profile/{user_id}")
+@router.get("/aggregated-profile")
 async def get_aggregated_profile(
-    user_id: int, current_user: TokenData = Depends(get_current_active_user)
+    current_user: TokenData = Depends(get_current_active_user),
 ):
     user_data = None
     profile_data = None
@@ -15,7 +15,7 @@ async def get_aggregated_profile(
     try:
         # Forward the user request to the user service
         user_data = await forward_request(
-            method="get", path=f"auth/user-info/{user_id}", service="auth"
+            method="get", path=f"user/{current_user.user_id}", service="auth"
         )
     except HTTPException as e:
         # Handle exception for the user service
@@ -27,7 +27,7 @@ async def get_aggregated_profile(
     try:
         # Forward the profile request to the profile service
         profile_data = await forward_request(
-            method="get", path=f"user-profile/{user_id}", service="core"
+            method="get", path=f"user-profile/{current_user.user_id}", service="core"
         )
     except HTTPException as e:
         # Handle exception for the profile service

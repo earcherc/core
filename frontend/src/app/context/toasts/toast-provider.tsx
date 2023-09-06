@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import Toast from '@app/components/toasts/toast';
 
-export const ToastContext = createContext<IToastContext | undefined>(undefined);
+export const ToastContext = createContext<ToastContext | undefined>(undefined);
 
 export default function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);

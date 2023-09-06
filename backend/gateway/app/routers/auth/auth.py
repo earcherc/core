@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends
-from ..services import forward_request
-from shared_schemas.auth import User
+from ...services import forward_request
+from shared_schemas.auth import UserCreate
 from fastapi.security import OAuth2PasswordRequestForm
+
 
 router = APIRouter()
 
 
 @router.post("/register")
-async def register(user: User):
+async def register(user: UserCreate):
     response = await forward_request(
         method="post", path="auth/register", params=user.dict(), service="auth"
     )

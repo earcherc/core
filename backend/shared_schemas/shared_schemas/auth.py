@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional
 
 # Ignore error, resolved when package is installed in services
 from pydantic import BaseModel
@@ -7,8 +7,23 @@ from pydantic import BaseModel
 class User(BaseModel):
     username: str
     email: str
-    password: Union[str, None] = None
-    disabled: Union[bool, None] = None
+    password: str
+    disabled: bool
+
+
+class UserCreate(User):
+    disabled: Optional[bool] = None
+
+
+class UserGet(User):
+    password: Optional[str] = None
+
+
+class UserUpdate(User):
+    username: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+    disabled: Optional[bool] = None
 
 
 class UserInDB(User):
@@ -24,6 +39,6 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: Optional[str] = None
-    user_id: Optional[int] = None
-    disabled: Optional[bool] = None
+    username: str
+    user_id: int
+    disabled: bool

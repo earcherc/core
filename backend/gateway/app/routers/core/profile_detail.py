@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from ..services import forward_request, get_current_active_user
+from ...services import forward_request, get_current_active_user
 from shared_schemas.auth import TokenData
 from shared_schemas.core import ProfilePhotoCreate, ProfilePhotoUpdate
 

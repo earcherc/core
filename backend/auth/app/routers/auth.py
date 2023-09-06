@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
 from datetime import timedelta
-from shared_schemas.auth import User, Token
+from shared_schemas.auth import UserCreate, Token
 from ..services import (
     get_user_func,
     verify_password_func,
@@ -23,7 +23,7 @@ class UserId(BaseModel):
 
 
 @router.post("/register", response_model=UserId, status_code=201)
-async def register(user: User, session: Session = Depends(get_session)):
+async def register(user: UserCreate, session: Session = Depends(get_session)):
     user_id = await register_user_func(user, session)
 
     if not user_id:

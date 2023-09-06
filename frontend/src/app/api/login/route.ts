@@ -36,7 +36,7 @@ export async function POST(request: Request) {
   // Decode the JWT token to get the user data
   const { sub, user_id, disabled } = (await verifyJwtToken(body.access_token)) as MyJWTPayload;
 
-  const userData = {
+  const tokenData: Partial<TokenData> = {
     username: sub,
     userId: user_id,
     isDisabled: disabled,
@@ -44,13 +44,13 @@ export async function POST(request: Request) {
 
   const userCookie = {
     name: 'user',
-    value: JSON.stringify(userData),
+    value: JSON.stringify(tokenData),
     maxAge: 60 * 60,
     secure: true,
     sameSite: 'strict' as const,
   };
 
-  const response = NextResponse.json({ body: { ...body, user: userData }, status: 200 });
+  const response = NextResponse.json({ body: { ...body, user: tokenData }, status: 200 });
   response.cookies.set(jwtCookie);
   response.cookies.set(userCookie);
 

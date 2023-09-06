@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { ToastContext } from './toast-provider';
 
-const useToast = (): IToastContext => {
+const useToast = (): ToastContext => {
   const context = useContext(ToastContext);
 
   if (!context) {

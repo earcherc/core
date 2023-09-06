@@ -4,3 +4,4 @@ from .auth_service import (
     verify_password_func,
     create_access_token_func,
 )
+from .user_service import update_user_func

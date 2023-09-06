@@ -1,39 +1,43 @@
 'use server';
 
-export async function updateUserDetails(formData: FormData) {
+import { cookies } from 'next/headers';
+
+export async function updateUser(formData: FormData) {
   'use server';
 
-  const data = {
-    firstName: formData.get('first-name'),
-    lastName: formData.get('last-name'),
-    email: formData.get('email'),
-    username: formData.get('username'),
-  };
+  const cookieStore = cookies();
+  const jwtCookie = cookieStore.get('jwt');
 
-  const params = new URLSearchParams();
-  params.append('firstName', data.firstName as string);
-  params.append('lastName', data.lastName as string);
-  params.append('email', data.email as string);
-  params.append('username', data.username as string);
+  if (!jwtCookie) throw new Error('No JWT found');
 
-  const res = await fetch('http://localhost:8002/user/update', {
-    method: 'POST',
+  const url = `http://localhost:8002/user/`;
+
+  const email = formData.get('email');
+  const username = formData.get('username');
+
+  if (typeof email !== 'string' || typeof username !== 'string') {
+    throw new Error('Invalid form data');
+  }
+
+  const data: Pick<User, 'email' | 'username'> = { email, username };
+
+  const res = await fetch(url, {
+    method: 'PUT',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
       'x-api-key': process.env.API_KEY || '',
+      Authorization: `Bearer ${jwtCookie.value}`,
     },
-    body: params,
+    body: JSON.stringify(data),
   });
 
+  const body = await res.json();
+
   if (!res.ok) {
-    // Handle error
-    const body = await res.json();
     console.error('Failed to update user:', body);
     return;
   }
 
-  // Handle success
-  const body = await res.json();
   console.log('Successfully updated user:', body);
 }
 

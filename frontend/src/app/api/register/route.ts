@@ -3,13 +3,19 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   const { username, email, password } = await request.json();
 
+  const body: Partial<User> = {
+    username,
+    email,
+    password,
+  };
+
   const res = await fetch('http://localhost:8002/auth/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'x-api-key': process.env.API_KEY || '',
     },
-    body: JSON.stringify({ username, email, password }),
+    body: JSON.stringify(body),
   });
 
   if (!res.ok) {

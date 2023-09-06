@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, createContext, useEffect } from 'react';
 
-export const AuthContext = createContext<IAuthContext | undefined>(undefined);
+export const AuthContext = createContext<AuthContext | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -13,7 +13,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const router = useRouter();
 
-  const setUser = ({ username, userId, isDisabled }: UserData) => {
+  const setUser = ({ username, userId, isDisabled }: TokenData) => {
     setUsername(username);
     setUserId(userId);
     setIsDisabled(isDisabled);
@@ -33,7 +33,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     clearUser();
   };
 
-  const isValidUser = (user: UserData): user is UserData => {
+  const isValidUser = (user: TokenData): user is TokenData => {
     return (
       user &&
       typeof user.username === 'string' &&

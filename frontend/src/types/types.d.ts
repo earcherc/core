@@ -7,14 +7,14 @@ type Toast = {
   isPaused: boolean;
 };
 
-interface ToastType {
+type ToastType = {
   bgColor: string;
   textColor: string;
   progressColor: string;
-  icon: ReactElement | null;
-}
+  icon: React.ReactElement | null;
+};
 
-interface IToastContext {
+interface ToastContext {
   toasts: Toast[];
   addToast: (toast: Pick<Toast, 'type' | 'content'> & Partial<Pick<Toast, 'autoCloseDelay'>>) => void;
   removeToast: (id: string) => void;
@@ -22,18 +22,23 @@ interface IToastContext {
   resumeToast: (id: string) => void;
 }
 
-interface IAuthContext {
+interface AuthContext {
   isAuthenticated: boolean;
   username: string | null;
   userId: number | null;
   isDisabled: boolean | null;
-  setUser: (user: UserData) => void;
+  setUser: (user: TokenData) => void;
   clearUser: () => void;
   logout: () => void;
 }
 
-type UserData = {
+type TokenData = {
   username: string;
   userId: number;
   isDisabled: boolean;
+};
+
+type AggregatedUserData = {
+  user: User;
+  profile: UserProfile;
 };
