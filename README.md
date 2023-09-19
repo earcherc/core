@@ -1,5 +1,8 @@
 # Core
-This template provides a streamlined foundation for building scalable Python microservices and Next.js 13 web applications, all within a Dockerized environment.
+*No longer supported*
+
+This template provides a foundation for building Python microservices and Next.js 13 web applications, all within a Dockerized environment.
+
 
 ## Planning Doc
 - [Google Docs](https://docs.google.com/document/d/1nWxq26N9xc58UbZNNJ4-m58uU7EoFh0y7El0LYVcf4U/edit?usp=sharing)
