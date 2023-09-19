@@ -9,32 +9,24 @@
 			"name": "Frontend"
 		},
 		{
-			"path": "backend/gateway",
-			"name": "Gateway"
-		},
-		{
 			"path": "backend/auth",
 			"name": "Auth"
 		},
 		{
-			"path": "backend/connection",
-			"name": "Connection"
+			"path": "backend/core",
+			"name": "Core"
 		},
 		{
-			"path": "backend/messaging",
-			"name": "Messaging"
-		},
-		{
-			"path": "backend/photo",
-			"name": "Photo"
-		},
-		{
-			"path": "backend/user",
-			"name": "User"
+			"path": "backend/gateway",
+			"name": "Gateway"
 		},
 		{
 			"path": "backend/rabbitmq_consumer",
 			"name": "RabbitMQ Consumer"
+		},
+		{
+			"path": "backend/shared_schemas",
+			"name": "Schemas"
 		}
 	],
 	"settings": {
