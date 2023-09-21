@@ -1,5 +1,5 @@
 # Core
-*No longer supported*
+*No longer supported, several mistakes were made :)*
 
 This template provides a foundation for building Python microservices and Next.js 13 web applications, all within a Dockerized environment.
 
